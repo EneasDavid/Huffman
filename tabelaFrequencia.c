@@ -21,6 +21,14 @@ typedef struct lista{
     int tam;
 }Lista;
 
+int testeMalloc(void *ponteiro, char *funcao){
+    //Testa se a alocação de memória foi bem sucedida
+    if(ponteiro==NULL){
+        printf("Erro na alocação de memória na função %s\n", funcao);
+        return 1;
+    }
+    return 0;
+}
 void preenchendoEntrada(unsigned char *entrada) {
     printf("Digite o caminho do arquivo: ");
     char nomeArquivo[100];
@@ -94,10 +102,7 @@ void insercaoOrdenada(Lista *lista, No *novo){ //logica de enqueue
     for(int i=0; i<TAMANHO_ASCII; i++){
         if(tabela[i]){
             No *novo=(No*)malloc(sizeof(No));
-            if(novo==NULL){
-                printf("Erro na alocação de memoria na função preencherListaEncadeada\n");
-                break;    
-            }
+            testeMalloc(novo, "preencherListaEncadeada");
             novo->caractere=i;
             novo->frequencia=tabela[i];
             novo->esquerda=NULL;
@@ -116,6 +121,51 @@ void imprimirLista(Lista *lista){
         atual=atual->proximo;
     }
 }
+
+    //---------------------------------------Parte 3, cria arvore de Huffman ---------------------------------------------------
+No *removerPrimeiro(Lista *lista){
+    //Logica de dequeue
+    No *removido=lista->inicio;
+    if(removido!=NULL){
+        lista->inicio=removido->proximo;
+        removido->proximo=NULL;
+        lista->tam--;
+    }
+    return removido;
+}
+
+No *montandoArvore(Lista *lista){
+    /*
+    Apos ordenar a frequencia, sabemos que vamos pegar
+    os dois elementos com menos frequencia e juntar em 
+    um novo nó na nossa arvore nessa logica, vamos pegar 
+    os dois primeiros elementos da lista e juntar em 
+    esquerdo e direto na arvore de huffman, e declarar 
+    o proximo como nulo
+    */
+    while(lista->tam>1){
+        No *novo=(No*)malloc(sizeof(No));
+        testeMalloc(novo, "montandoArvore");
+        novo->esquerda=removerPrimeiro(lista);
+        novo->direita=removerPrimeiro(lista);
+        novo->frequencia=novo->esquerda->frequencia + novo->direita->frequencia;
+        novo->caractere=0;
+        novo->proximo=NULL;
+        insercaoOrdenada(lista, novo);
+    }
+    return removerPrimeiro(lista);
+}
+
+void imprimirArvoreHuffman(No *raiz, int tamanho){
+    //logica de impressão de arvore
+    if(raiz->esquerda==NULL && raiz->direita==NULL){
+        printf("Caractere: %c\tFrequencia: %u\n", raiz->caractere, raiz->frequencia);
+    }else{
+        imprimirArvoreHuffman(raiz->esquerda, tamanho+1);
+        imprimirArvoreHuffman(raiz->direita, tamanho+1);
+    }
+}
+    //---------------------------------------Parte 3, cria arvore de Huffman ---------------------------------------------------
 
 int main(){
     setlocale(LC_ALL, "Portuguese"); //Mudamos a tabela de caracteres para português, assim interpretanto nosso acentos e cedilhas
@@ -142,6 +192,10 @@ int main(){
     criarLista(&lista);
     preencherListaEncadeada(tabelaFrequencia, &lista);
     imprimirLista(&lista);
+    //---------------------------------------Parte 3, cria arvore de Huffman ---------------------------------------------------
+    No *raiz=montandoArvore(&lista);
+    printf("\tArvore de Huffman\n");
+    imprimirArvoreHuffman(raiz, 0);
 
     return 0;
 }
