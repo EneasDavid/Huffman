@@ -16,10 +16,10 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 | 8. porjeto Final | <ul><li>- [ ] feito</li><ul>| main |
 
 ### Integrantes
-- [David Enéas]
-- [Mayara Jacinto]
-- [Julya]
-- [Pedro Guloso]
+- | David Enéas | Ciência da Computação | 2023.1 |  
+- | Mayara Jacinto | Engenharia de Computação | 2023.1 |
+- | Julya | Engenharia de Computação | 2023.1 |
+- | Pedro Guloso | Engenharia de Computação | 2023.1 |
 
 ### Estrutura do Projeto
 ```
@@ -36,3 +36,20 @@ Para compilar o projeto, basta executar o comando `gcc -o execucaoTabela tabelaF
 
 ### Execução
 Para executar o projeto, basta rodar o comando `./execucaoTabela` no terminal. O programa irá solicitar o arquivo a ser comprimido, `bateriaDeTestes/teste.txt` o teste padrão é realizado nesse arquivo.
+
+### De forma resumida:
+
+```
+gcc -o execucaoTabela tabelaFrequencia.c
+```
+`Gera o executavel do projeto`
+
+```
+./execucaoTabela
+```
+`Inicia o executavel do projeto`
+
+```
+bateriaDeTestes/teste.txt
+```
+`fornece o caminho do arquivo teste`
