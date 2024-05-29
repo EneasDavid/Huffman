@@ -16,10 +16,12 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 | 8. porjeto Final | <ul><li>- [ ] feito</li><ul>| main |
 
 ### Integrantes
-- | David Enéas | Ciência da Computação | 2023.1 |  
-- | Mayara Jacinto | Engenharia de Computação | 2023.1 |
-- | Julya | Engenharia de Computação | 2023.1 |
-- | Pedro Guloso | Engenharia de Computação | 2023.1 |
+| Discente | Curso | 
+| -------- | -------- |
+| David Enéas | Ciência da Computação |  
+| Mayara Jacinto | Engenharia de Computação |
+| Julya | Engenharia de Computação | 
+| Pedro Guloso | Engenharia de Computação |
 
 ### Estrutura do Projeto
 ```
