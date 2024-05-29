@@ -1,5 +1,5 @@
-[![Badge em desenvolvimento](https://img.shields.io/badge/Andamento%20do%20projeto-15%-39E09B)](#)
-[![C](https://img.shields.io/badge/C-00599C?logo=c&logoColor=white)](#)
+![Badge em desenvolvimento](https://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=YELLOW&style=for-the-badge)
+[!(https://img.shields.io/badge/C-00599C?logo=c&logoColor=white)](#)
 
 ## Projeto Algoritmo de Huffman
 
