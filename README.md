@@ -6,14 +6,14 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 ###Etapas de criação
 | Etapas | Status | Branch |
 | -------- | -------- | -------- |
-| 1. Criação de vetor de frequencia | - [x] | contarFrequencia |
-| 2. Criação da árvore de Huffman | - [ ] | arvoreHuffman |
-| 3. Criação da tabela de códigos | - [ ] | tabelaCodigos |
-| 4. Compressão do arquivo | - [ ] | compressao |
-| 5. Descompressão do arquivo | - [ ] | descompressao |
-| 6. Testes | - [ ] | testes |
-| 7. Documentação | - [ ] | documentacao |
-| 8. porjeto Final | - [ ] | main |
+| 1. Criação de vetor de frequencia | <ul><li>- [x] feito</li><ul> | contarFrequencia |
+| 2. Criação da árvore de Huffman | <ul><li>- [ ] feito</li><ul>| arvoreHuffman |
+| 3. Criação da tabela de códigos | <ul><li>- [ ] feito</li><ul>| tabelaCodigos |
+| 4. Compressão do arquivo | <ul><li>- [ ] feito</li><ul>| compressao |
+| 5. Descompressão do arquivo | <ul><li>- [ ] feito</li><ul>| descompressao |
+| 6. Testes | <ul><li>- [ ] feito</li><ul>| testes |
+| 7. Documentação | <ul><li>- [ ] feito</li><ul>| documentacao |
+| 8. porjeto Final | <ul><li>- [ ] feito</li><ul>| main |
 
 ### Integrantes
 - [David Enéas]
