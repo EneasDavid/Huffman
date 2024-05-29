@@ -29,6 +29,7 @@ int testeMalloc(void *ponteiro, char *funcao){
     }
     return 0;
 }
+
 void preenchendoEntrada(unsigned char *entrada) {
     printf("Digite o caminho do arquivo: ");
     char nomeArquivo[100];
@@ -55,7 +56,6 @@ void preenchendoEntrada(unsigned char *entrada) {
     fclose(arquivo);
 }
 
-
 void contaFrequencia(unsigned char *entrada, unsigned int *tabela){
     /*percorremos toda a entrada e sicrono a isso vamos preenchendo
     a tabela na posição referente a sua posição na tabela ASCII*/
@@ -70,7 +70,7 @@ void testeContaFrequencia( unsigned int *tabela, unsigned char *entrada){
     printf("\tTabela de frequencia\n");
     for(int i=0; i<TAMANHO_ASCII; i++){
         // %u na linha abaixo é usado para garantir que não vai imprimir sinal negativo
-        if(tabela[i]) printf("\tO caractere %c aparece %u vezes\n", i, tabela[i]);
+        if(tabela[i]) printf("O caractere %c aparece %u vezes\n", i, tabela[i]);
     }
     printf("%s\n",entrada);
 }
@@ -164,10 +164,11 @@ void imprimirArvoreHuffmanFormatada(No *raiz) {
         imprimirArvoreHuffmanFormatada(raiz->esquerda);
         imprimirArvoreHuffmanFormatada(raiz->direita);
     }
-    printf(")");
+    printf(") ");
 }
 
 /*
+Imprimir arvore sem formatação
 void imprimirArvoreHuffman(No *raiz, int tamanho){
     //logica de impressão de arvore
     if(raiz->esquerda==NULL && raiz->direita==NULL){
@@ -177,7 +178,27 @@ void imprimirArvoreHuffman(No *raiz, int tamanho){
         imprimirArvoreHuffman(raiz->direita, tamanho+1);
     }
 }*/
-    //---------------------------------------Parte 3, cria arvore de Huffman ---------------------------------------------------
+
+int alturaArvore(No *raiz){
+    //logica de altura de arvore
+    //Se a raiz for nula, a altura é -1
+    //Se a raiz tiver filhos, a altura é 1 + a maior altura entre os filhos
+    if(raiz==NULL) return -1;
+    int alturaEsquerda=alturaArvore(raiz->esquerda);
+    int alturaDireita=alturaArvore(raiz->direita);
+    return 1+(alturaEsquerda>alturaDireita?alturaEsquerda:alturaDireita);
+}
+
+char ** alocaDicionario(int alturaArvore){
+    //logica de alocação de dicionario
+    char **dicionario=(char**)malloc(alturaArvore*sizeof(char*));
+    testeMalloc(dicionario, "alocaDicionario");
+    for(int i=0; i<TAMANHO_ASCII; i++){
+        dicionario[i]=(char*)malloc(alturaArvore*sizeof(char));
+        testeMalloc(dicionario[i], "alocaDicionario");
+    }
+    return dicionario;
+}
 
 int main(){
     setlocale(LC_ALL, "Portuguese"); //Mudamos a tabela de caracteres para português, assim interpretanto nosso acentos e cedilhas
@@ -208,6 +229,9 @@ int main(){
     No *raiz=montandoArvore(&lista);
     printf("\tArvore de Huffman\n");
     imprimirArvoreHuffmanFormatada(raiz);
+    //---------------------------------------Parte 4, cria um dicionario ---------------------------------------------------
+    int altura=alturaArvore(raiz);
+    alocaDicionario(altura);
 
     return 0;
 }
