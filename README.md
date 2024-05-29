@@ -1,4 +1,7 @@
-##Projeto Algoritmo de Huffman
+[![Badge em desenvolvimento](https://img.shields.io/badge/Andamento%20do%20projeto-15%-39E09B)]
+[![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)]
+
+## Projeto Algoritmo de Huffman
 
 ### Descrição
 O projeto consiste em implementar o algoritmo de Huffman para compressão de arquivos. O algoritmo de Huffman é um método de compressão que usa as probabilidades de ocorrência dos símbolos no conjunto de dados a ser comprimido para determinar códigos de tamanho variável para cada símbolo. O algoritmo foi desenvolvido por David A. Huffman em 1952, enquanto era um estudante de graduação no MIT, e foi publicado em 1952.
