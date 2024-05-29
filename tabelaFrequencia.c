@@ -122,7 +122,6 @@ void imprimirLista(Lista *lista){
     }
 }
 
-    //---------------------------------------Parte 3, cria arvore de Huffman ---------------------------------------------------
 No *removerPrimeiro(Lista *lista){
     //Logica de dequeue
     No *removido=lista->inicio;
@@ -156,6 +155,19 @@ No *montandoArvore(Lista *lista){
     return removerPrimeiro(lista);
 }
 
+void imprimirArvoreHuffmanFormatada(No *raiz) {
+    if (raiz == NULL) return;
+    printf("(");
+    if (raiz->esquerda == NULL && raiz->direita == NULL) {
+        printf("%c", raiz->caractere);
+    } else {
+        imprimirArvoreHuffmanFormatada(raiz->esquerda);
+        imprimirArvoreHuffmanFormatada(raiz->direita);
+    }
+    printf(")");
+}
+
+/*
 void imprimirArvoreHuffman(No *raiz, int tamanho){
     //logica de impressão de arvore
     if(raiz->esquerda==NULL && raiz->direita==NULL){
@@ -164,7 +176,7 @@ void imprimirArvoreHuffman(No *raiz, int tamanho){
         imprimirArvoreHuffman(raiz->esquerda, tamanho+1);
         imprimirArvoreHuffman(raiz->direita, tamanho+1);
     }
-}
+}*/
     //---------------------------------------Parte 3, cria arvore de Huffman ---------------------------------------------------
 
 int main(){
@@ -195,7 +207,7 @@ int main(){
     //---------------------------------------Parte 3, cria arvore de Huffman ---------------------------------------------------
     No *raiz=montandoArvore(&lista);
     printf("\tArvore de Huffman\n");
-    imprimirArvoreHuffman(raiz, 0);
+    imprimirArvoreHuffmanFormatada(raiz);
 
     return 0;
 }
