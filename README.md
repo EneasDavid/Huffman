@@ -15,10 +15,8 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 | 3. Criação da árvore de Huffman | <ul><li>- [x] feito</li><ul>| arvoreHuffman |
 | 4. Criação de dicionario de Huffman | <ul><li>- [x] feito</li><ul>| dicionario |
 | 5. Compressão do arquivo | <ul><li>- [x] feito</li><ul>| compactando |
-| 6. Descompressão do arquivo | <ul><li>- [ ] feito</li><ul>| descompressao |
-| 7. Testes | <ul><li>- [ ] feito</li><ul>| testes |
-| 8. Documentação | <ul><li>- [ ] feito</li><ul>| documentacao |
-| 9. porjeto Final | <ul><li>- [ ] feito</li><ul>| main |
+| 6. Descompressão do arquivo | <ul><li>- [x] feito</li><ul>| descompressao |
+| 7. porjeto Final | <ul><li>- [ ] feito</li><ul>| main |
 
 ### Integrantes
 | Discente | Curso | 
@@ -31,33 +29,31 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 ### Estrutura do Projeto
 ```
 ├── README.md
-├── tabelaFrequencia.c
+├── algoritmoDeHuffman.c
 ├── execucaotabela.exe
 └── bateriaDeTestes
     ├── teste.txt
-    └── 20240110_122255.jpg
 ```
 
 ### Compilação
-Para compilar o projeto, basta executar o comando `gcc -o execucaoTabela tabelaFrequencia.c` no terminal. O comando irá gerar um executável chamado `execucaoTabela`.
+Para compilar o projeto, basta executar o comando `gcc -o huffman algoritmoDeHuffman.c` no terminal. O comando irá gerar um executável chamado `huffman`.
 
 ### Execução
-Para executar o projeto, basta rodar o comando `./execucaoTabela` no terminal. O programa irá solicitar o arquivo a ser comprimido, `bateriaDeTestes/teste.txt` o teste padrão é realizado nesse arquivo.
+Para executar o projeto, basta rodar o comando `./huffman` no terminal. O programa irá solicitar o arquivo a ser comprimido, `bateriaDeTestes/teste.txt` o teste padrão é realizado nesse arquivo.
 
 ### De forma resumida:
 
 ```
-gcc -o execucaoTabela tabelaFrequencia.c
+gcc -o huffman algoritmoDeHuffman.c
 ```
 `Gera o executavel do projeto`
 
 ```
-./execucaoTabela
+./huffman
 ```
 `Inicia o executavel do projeto`
 
 ```
 bateriaDeTestes/teste.txt
-bateriaDeTestes/20240110_122255.jpg
 ```
 `fornece o caminho do arquivo teste`
