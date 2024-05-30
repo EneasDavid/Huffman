@@ -30,7 +30,7 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 ```
 ├── README.md
 ├── algoritmoDeHuffman.c
-├── execucaotabela.exe
+├── huffman.exe
 └── bateriaDeTestes
     ├── teste.txt
 ```

@@ -274,7 +274,7 @@ char *compactarEntrada(char **dicionario, unsigned char *entrada){
 }
 
 void imprimirCodificado(char *codificado){
-    printf("\Compactado\n");
+    printf("Compactado\n");
     printf("%s\n", codificado);
 }
 
@@ -353,7 +353,7 @@ int main(){
     imprimirCodificado(entradaCodificada);
     //------------------------------------------Parte 6, descompactar ----------------------------------------------------------
     char *decodificado=decodificar(entradaCodificada, raiz);
-    printf("\Descompactado\n");
+    printf("Descompactado\n");
     printf("%s\n", decodificado); 
     //------------------------------------------Parte 7, limpar memoria ----------------------------------------------------------
     free(entradaCodificada);
