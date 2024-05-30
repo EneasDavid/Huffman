@@ -23,7 +23,7 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 | -------- | -------- |
 | David Enéas | Ciência da Computação |  
 | Mayara Jacinto | Engenharia de Computação |
-| Julya | Engenharia de Computação | 
+| Julya Cabral| Engenharia de Computação | 
 | Pedro Guloso | Engenharia de Computação |
 
 ### Estrutura do Projeto
