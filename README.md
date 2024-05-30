@@ -58,5 +58,6 @@ gcc -o execucaoTabela tabelaFrequencia.c
 
 ```
 bateriaDeTestes/teste.txt
+bateriaDeTestes/20240110_122255.jpg
 ```
 `fornece o caminho do arquivo teste`

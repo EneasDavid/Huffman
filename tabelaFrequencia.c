@@ -35,22 +35,24 @@ void preenchendoEntrada(unsigned char *entrada) {
     char nomeArquivo[100];
     
     // Lendo o nome do arquivo
-    if (scanf("%99s", nomeArquivo) !=1) {
-        //o %99s garante que só sejam lidos 100 caracteres, e em caso de tentar adicionar mais, ele retorna um erro e encerra a aplicação
+    if (scanf("%99s", nomeArquivo) != 1) {
+        // O %99s garante que só sejam lidos 100 caracteres, e em caso de tentar adicionar mais, ele retorna um erro e encerra a aplicação
         printf("Erro ao ler o caminho do arquivo.\n");
         return;
     }
 
-    // Abrindo o arquivo
-    FILE *arquivo=fopen(nomeArquivo, "r");
-    if (arquivo==NULL) {
+    // Abrindo o arquivo no modo binário - rb
+    FILE *arquivo = fopen(nomeArquivo, "rb");
+    if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return;
     }
-
-    // Lendo o conteúdo do arquivo
-    size_t len=fread(entrada, sizeof(unsigned char), TAMANHO_ENTRADA - 1, arquivo);
-    entrada[len]='\0'; // Assegura que a entrada é terminada com um caractere nulo
+    // Lendo o conteúdo do arquivo byte a byte
+    
+    size_t len = 0;
+    int byte;
+    while ((byte = fgetc(arquivo)) != EOF && len < TAMANHO_ENTRADA - 1) entrada[len++] = (unsigned char)byte;
+    entrada[len] = '\0'; // Assegura que a entrada é terminada com um caractere nulo
 
     // Fechando o arquivo
     fclose(arquivo);
@@ -286,6 +288,7 @@ int main(){
     preencherDicionario(dicionario, raiz, "", 0);
     //Teste de dicionario
     imprimirDicionario(dicionario);
-
+    //---------------------------------------Parte 4, codificando ---------------------------------------------------\
+    
     return 0;
 }
