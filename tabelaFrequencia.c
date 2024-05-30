@@ -65,7 +65,7 @@ void contaFrequencia(unsigned char *entrada, unsigned int *tabela){
     }
 }
 
-void testeContaFrequencia( unsigned int *tabela, unsigned char *entrada){
+void imprimirFrequencia( unsigned int *tabela, unsigned char *entrada){
     //   Teste de função contaFrequencia
     printf("\tTabela de frequencia\n");
     for(int i=0; i<TAMANHO_ASCII; i++){
@@ -188,50 +188,104 @@ int alturaArvore(No *raiz){
     int alturaDireita=alturaArvore(raiz->direita);
     return 1+(alturaEsquerda>alturaDireita?alturaEsquerda:alturaDireita);
 }
-
-char ** alocaDicionario(int alturaArvore){
+//Poderia ser ignorado com strdup??
+char ** alocaoDicionario(int alturaArvore){
     //logica de alocação de dicionario
-    char **dicionario=(char**)malloc(alturaArvore*sizeof(char*));
+    char **dicionario=(char**)malloc(TAMANHO_ASCII*sizeof(char*));
     testeMalloc(dicionario, "alocaDicionario");
     for(int i=0; i<TAMANHO_ASCII; i++){
-        dicionario[i]=(char*)malloc(alturaArvore*sizeof(char));
+        dicionario[i]=calloc(alturaArvore, sizeof(char));
+        //calloc aloca e inicializa a memória com 0, já o malloc mantem o lixo de memoria 
         testeMalloc(dicionario[i], "alocaDicionario");
     }
     return dicionario;
 }
+//REVER URGENTE 
+void preencherDicionario(char **dicionario, No *raiz, char *caminho, int alturaArvore){
+    if (raiz->esquerda == NULL && raiz->direita == NULL){ 
+        /*Se passar, estamos em uma folha e estando em ponto sem filhos
+        podemos interpretar que chegamos ao fim de um galho e podeoms
+        preencher o dicionario com o caminho percorrido até aqui
+        */
+        caminho[alturaArvore] = '\0';
+        strcpy(dicionario[raiz->caractere], caminho);
+        //se preferiu usar strcpy porque já foi pre alocado o espaço, já o strdup aloca memória suficiente para a string e copia a string para a memória alocada
+        return; //serve para evitar o else
+   
+    }
 
+    // Cria uma cópia local do caminho para manipulação
+    char caminhoEsquerda[alturaArvore + 2]; 
+    char caminhoDireita[alturaArvore + 2];
+    // +2 para o caractere nulo e o caractere que será adicionado
+    strcpy(caminhoEsquerda, caminho);
+    strcpy(caminhoDireita, caminho);
+
+    //Zero significa que o caminho está a esquerda
+    caminhoEsquerda[alturaArvore] = '0'; 
+    caminhoEsquerda[alturaArvore + 1] = '\0';
+    // +1 para o caractere nulo que é \0
+    preencherDicionario(dicionario, raiz->esquerda, caminhoEsquerda, alturaArvore + 1);
+
+    //Um significa que o caminho está a direita
+    caminhoDireita[alturaArvore] = '1'; 
+    caminhoDireita[alturaArvore + 1] = '\0';
+    preencherDicionario(dicionario, raiz->direita, caminhoDireita, alturaArvore + 1);
+}
+
+
+void imprimirDicionario(char **dicicionario){
+    printf("\tDicionario\n");
+    for(int i=0;i<TAMANHO_ASCII; i++){
+        if (dicicionario[i][0]) printf("Codigo: %3d\tCaractere: %c\tCaminho: %s\n", i, i, dicicionario[i]);
+        // %3d formata para que a saida sempre seja (000),(099), (222)
+        //dicionario[i][0] o [0] é usado para garantir que o dicionario[i] não é uma string vazia
+    }
+}
 int main(){
     setlocale(LC_ALL, "Portuguese"); //Mudamos a tabela de caracteres para português, assim interpretanto nosso acentos e cedilhas
 
-    //unsigned força o valor a ser positivo
+        //unsigned força o valor a ser positivo
 
-    /*O uso do 'unsigned char' é para que o compilador não interprete
-    o valor como um caractere, mas sim como um número, isso garante a 
-    possivilidade de interpertar imagens, textos e audios.*/
+        /*O uso do 'unsigned char' é para que o compilador não interprete
+        o valor como um caractere, mas sim como um número, isso garante a 
+        possivilidade de interpertar imagens, textos e audios.*/
 
-    /*Char tem lado possitivo e negativo o que limita seu uso entre 
-    -127 a 127, mas se quisermos algo mais otimizado, ignoraremos o 
-    lado negativo,  o que nos possibilita armazenar 255 bits, batendo 
-    com a tabelas ASCII estendida */
+        /*Char tem lado possitivo e negativo o que limita seu uso entre 
+        -127 a 127, mas se quisermos algo mais otimizado, ignoraremos o 
+        lado negativo,  o que nos possibilita armazenar 255 bits, batendo 
+        com a tabelas ASCII estendida */
     
     //---------------------------------------Parte 1, cria tabela de frequência ---------------------------------------------------
     unsigned char entrada[TAMANHO_ENTRADA];
     unsigned int tabelaFrequencia[TAMANHO_ASCII]={0};
     preenchendoEntrada(entrada);
     contaFrequencia(entrada, tabelaFrequencia);
-    testeContaFrequencia(tabelaFrequencia, entrada);
+    //Teste de contarFrequencia
+    imprimirFrequencia(tabelaFrequencia, entrada);
     //---------------------------------------Parte 2, Criar lista Encadeada ---------------------------------------------------
     Lista lista;
     criarLista(&lista);
     preencherListaEncadeada(tabelaFrequencia, &lista);
+    //Teste de lista
     imprimirLista(&lista);
     //---------------------------------------Parte 3, cria arvore de Huffman ---------------------------------------------------
     No *raiz=montandoArvore(&lista);
     printf("\tArvore de Huffman\n");
+    //Teste de arvore
     imprimirArvoreHuffmanFormatada(raiz);
+    printf("\n");
     //---------------------------------------Parte 4, cria um dicionario ---------------------------------------------------
-    int altura=alturaArvore(raiz);
-    alocaDicionario(altura);
+    int altura=alturaArvore(raiz)+1; 
+        /*
+        vai ser usado em todo o codigo como indicador de colunas
+        Possue um +1 porque a raiz não é contada na altura
+        */
+    alocaoDicionario(altura);
+    char **dicionario=alocaoDicionario(altura);
+    preencherDicionario(dicionario, raiz, "", 0);
+    //Teste de dicionario
+    imprimirDicionario(dicionario);
 
     return 0;
 }

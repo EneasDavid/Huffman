@@ -13,11 +13,12 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 | 1. Criação de vetor de frequencia | <ul><li>- [x] feito</li><ul> | contarFrequencia |
 | 2. Criação da tabela de códigos | <ul><li>- [x] feito</li><ul>| listaOrdenada |
 | 3. Criação da árvore de Huffman | <ul><li>- [x] feito</li><ul>| arvoreHuffman |
-| 4. Compressão do arquivo | <ul><li>- [ ] feito</li><ul>| compressao |
-| 5. Descompressão do arquivo | <ul><li>- [ ] feito</li><ul>| descompressao |
-| 6. Testes | <ul><li>- [ ] feito</li><ul>| testes |
-| 7. Documentação | <ul><li>- [ ] feito</li><ul>| documentacao |
-| 8. porjeto Final | <ul><li>- [ ] feito</li><ul>| main |
+| 4. Criação de dicionario de Huffman | <ul><li>- [x] feito</li><ul>| dicionario |
+| 5. Compressão do arquivo | <ul><li>- [ ] feito</li><ul>| compressao |
+| 6. Descompressão do arquivo | <ul><li>- [ ] feito</li><ul>| descompressao |
+| 7. Testes | <ul><li>- [ ] feito</li><ul>| testes |
+| 8. Documentação | <ul><li>- [ ] feito</li><ul>| documentacao |
+| 9. porjeto Final | <ul><li>- [ ] feito</li><ul>| main |
 
 ### Integrantes
 | Discente | Curso | 
