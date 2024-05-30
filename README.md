@@ -1,4 +1,4 @@
-![Badge de concluido](https://img.shields.io/static/v1?label=STATUS&message=CONCLUÍDO&color=YELLOW&style=for-the-badge)
+<img src="http://img.shields.io/static/v1?label=STATUS&message=CONCLUIDO&color=GREEN&style=for-the-badge"/>
 ![C](https://img.shields.io/badge/C-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
 
 
