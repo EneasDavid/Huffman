@@ -169,8 +169,8 @@ void imprimirArvoreHuffmanFormatada(No *raiz) {
     printf(") ");
 }
 
-/*
-Imprimir arvore sem formatação
+
+//Imprimir arvore sem formatação
 void imprimirArvoreHuffman(No *raiz, int tamanho){
     //logica de impressão de arvore
     if(raiz->esquerda==NULL && raiz->direita==NULL){
@@ -179,7 +179,7 @@ void imprimirArvoreHuffman(No *raiz, int tamanho){
         imprimirArvoreHuffman(raiz->esquerda, tamanho+1);
         imprimirArvoreHuffman(raiz->direita, tamanho+1);
     }
-}*/
+}
 
 int alturaArvore(No *raiz){
     //logica de altura de arvore
@@ -190,6 +190,7 @@ int alturaArvore(No *raiz){
     int alturaDireita=alturaArvore(raiz->direita);
     return 1+(alturaEsquerda>alturaDireita?alturaEsquerda:alturaDireita);
 }
+
 //Poderia ser ignorado com strdup??
 char ** alocaoDicionario(int alturaArvore){
     //logica de alocação de dicionario
@@ -202,6 +203,7 @@ char ** alocaoDicionario(int alturaArvore){
     }
     return dicionario;
 }
+
 //REVER URGENTE 
 void preencherDicionario(char **dicionario, No *raiz, char *caminho, int alturaArvore){
     if (raiz->esquerda == NULL && raiz->direita == NULL){ 
@@ -244,6 +246,43 @@ void imprimirDicionario(char **dicicionario){
         //dicionario[i][0] o [0] é usado para garantir que o dicionario[i] não é uma string vazia
     }
 }
+
+int tamanhoString(char **dicionario, char *entrada){
+    int tamanho=0;
+    while(*entrada){
+        tamanho+=strlen(dicionario[*entrada]);
+        entrada++;
+    }
+    return tamanho;
+}
+
+char* compactarEntrada(char **dicionario, unsigned char *entrada){
+    /*
+     Incialmente é chamado a função tamanhoString para saber
+     o tamanho da string codificada e alocar a memória necessária
+    */
+     int tamanho = tamanhoString(dicionario, entrada);
+    char *codificado = (char*)calloc(tamanho + 1, sizeof(char)); // +1 para o caractere nulo
+    testeMalloc(codificado, "codificar");
+    /*
+        	*entrada=entrada[posicao]
+     o while vai percorrer toda a entrada e para cada caractere
+     ele vai concatenar o caminho do dicionario referente a esse
+     caractere no codificado
+    */
+    while(*entrada){
+        strcat(codificado, dicionario[*entrada]); 
+        entrada++;
+    }
+    return codificado;
+}
+
+void imprimirCodificado(char *codificado){
+    printf("\tCodificado\n");
+    printf("%s\n", codificado);
+    free(codificado);
+}
+
 int main(){
     setlocale(LC_ALL, "Portuguese"); //Mudamos a tabela de caracteres para português, assim interpretanto nosso acentos e cedilhas
 
@@ -258,14 +297,14 @@ int main(){
         lado negativo,  o que nos possibilita armazenar 255 bits, batendo 
         com a tabelas ASCII estendida */
     
-    //---------------------------------------Parte 1, cria tabela de frequência ---------------------------------------------------
+    //---------------------------------------Parte 1, cria tabela de frequência ------------------------------------------------
     unsigned char entrada[TAMANHO_ENTRADA];
     unsigned int tabelaFrequencia[TAMANHO_ASCII]={0};
     preenchendoEntrada(entrada);
     contaFrequencia(entrada, tabelaFrequencia);
     //Teste de contarFrequencia
     imprimirFrequencia(tabelaFrequencia, entrada);
-    //---------------------------------------Parte 2, Criar lista Encadeada ---------------------------------------------------
+    //---------------------------------------Parte 2, Criar lista Encadeada ----------------------------------------------------
     Lista lista;
     criarLista(&lista);
     preencherListaEncadeada(tabelaFrequencia, &lista);
@@ -275,9 +314,9 @@ int main(){
     No *raiz=montandoArvore(&lista);
     printf("\tArvore de Huffman\n");
     //Teste de arvore
-    imprimirArvoreHuffmanFormatada(raiz);
+    imprimirArvoreHuffman(raiz,0);
     printf("\n");
-    //---------------------------------------Parte 4, cria um dicionario ---------------------------------------------------
+    //---------------------------------------Parte 4, cria um dicionario -------------------------------------------------------
     int altura=alturaArvore(raiz)+1; 
         /*
         vai ser usado em todo o codigo como indicador de colunas
@@ -288,7 +327,8 @@ int main(){
     preencherDicionario(dicionario, raiz, "", 0);
     //Teste de dicionario
     imprimirDicionario(dicionario);
-    //---------------------------------------Parte 4, codificando ---------------------------------------------------\
-    
+    //------------------------------------------Parte 4, compactar ----------------------------------------------------------
+    char *entradaCodificada = compactarEntrada(dicionario, entrada);
+    imprimirCodificado(entradaCodificada);
     return 0;
 }

@@ -14,7 +14,7 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 | 2. Criação da tabela de códigos | <ul><li>- [x] feito</li><ul>| listaOrdenada |
 | 3. Criação da árvore de Huffman | <ul><li>- [x] feito</li><ul>| arvoreHuffman |
 | 4. Criação de dicionario de Huffman | <ul><li>- [x] feito</li><ul>| dicionario |
-| 5. Compressão do arquivo | <ul><li>- [ ] feito</li><ul>| compressao |
+| 5. Compressão do arquivo | <ul><li>- [x] feito</li><ul>| compactando |
 | 6. Descompressão do arquivo | <ul><li>- [ ] feito</li><ul>| descompressao |
 | 7. Testes | <ul><li>- [ ] feito</li><ul>| testes |
 | 8. Documentação | <ul><li>- [ ] feito</li><ul>| documentacao |
