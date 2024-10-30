@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 // Uso interno durante a compressão
 int fila_prioridade_vazia(NoHuffman *fila)
@@ -12,20 +13,20 @@ int fila_prioridade_vazia(NoHuffman *fila)
 NoHuffman *inserir_na_fila_prioridade(NoHuffman **fila, int frequencia, char caracter, int *tamanho_atual_lista)
 {
     /**
-     * O parâmetro tamanho_atual_lista é um ponteiro porque precisa 
+     * O parâmetro tamanho_atual_lista é um ponteiro porque precisa
      * ser atualizado na função que chama essa função.
      */
     NoHuffman *novo_no = criar_no_huffman(caracter, frequencia);
     NoHuffman *atual = *fila; // Ponteiro que percorrerá a fila
-    NoHuffman *anter = NULL;   // Ponteiro para o nó anterior
+    NoHuffman *anter = NULL;  // Ponteiro para o nó anterior
 
     // Se a fila estiver vazia, insere o novo nó como o primeiro.
     if (*fila == NULL)
     {
-        *fila = novo_no; // Atualiza a cabeça da fila
-        novo_no->proximo = NULL; // O novo nó não aponta para nenhum próximo nó
+        *fila = novo_no;          // Atualiza a cabeça da fila
+        novo_no->proximo = NULL;  // O novo nó não aponta para nenhum próximo nó
         (*tamanho_atual_lista)++; // Incrementa o tamanho da lista
-        return novo_no; // Retorna o novo nó
+        return novo_no;           // Retorna o novo nó
     }
 
     // Percorre a fila para encontrar a posição correta de inserção.
@@ -36,35 +37,39 @@ NoHuffman *inserir_na_fila_prioridade(NoHuffman **fila, int frequencia, char car
         {
             novo_no->proximo = atual; // O novo nó aponta para o atual
             (*tamanho_atual_lista)++; // Incrementa o tamanho da lista
-            
+
             // Se há um nó anterior, conecta-o ao novo nó
-            if (anter != NULL){
+            if (anter != NULL)
+            {
                 anter->proximo = novo_no;
-            }else{
+            }
+            else
+            {
                 *fila = novo_no; // O novo nó se torna a cabeça da fila
             }
             return novo_no; // Retorna o novo nó inserido
         }
-        anter = atual; // Atualiza o nó anterior
+        anter = atual;          // Atualiza o nó anterior
         atual = atual->proximo; // Move para o próximo nó
     }
 
     // Se chegou até aqui, o novo nó deve ser inserido no final da fila.
     anter->proximo = novo_no; // O nó anterior agora aponta para o novo nó
-    novo_no->proximo = NULL; // O novo nó não aponta para mais nenhum nó
+    novo_no->proximo = NULL;  // O novo nó não aponta para mais nenhum nó
     (*tamanho_atual_lista)++; // Incrementa o tamanho da lista
-    return novo_no; // Retorna o novo nó inserido
+    return novo_no;           // Retorna o novo nó inserido
 }
 
 NoHuffman *remover_da_fila_prioridade(NoHuffman **fila, int *tamanho_atual_lista)
 {
     /**
-     * O parâmetro tamanho_atual_lista é um ponteiro porque precisa 
+     * O parâmetro tamanho_atual_lista é um ponteiro porque precisa
      * ser atualizado na função que chama essa função.
      */
-    
+
     // Verifica se a fila de prioridade está vazia. Se estiver, retorna NULL.
-    if (fila_prioridade_vazia(*fila)){
+    if (fila_prioridade_vazia(*fila))
+    {
         return NULL;
     }
     // Armazena o nó que será removido (a cabeça da lista).
@@ -88,10 +93,10 @@ NoHuffman *remover_da_fila_prioridade(NoHuffman **fila, int *tamanho_atual_lista
 NoHuffman *obter_frequencia_caracter(FILE *arquivo, int arr_frequencia[TAMANHO_ASCII], int *tamanho_atual_lista)
 {
     /**
-     * O parâmetro tamanho_atual_lista é um ponteiro porque precisa 
+     * O parâmetro tamanho_atual_lista é um ponteiro porque precisa
      * ser atualizado na função que chama essa função.
      */
-    
+
     unsigned char caracter; // Variável para armazenar cada caractere lido do arquivo
 
     // Lê o arquivo byte a byte até o final
@@ -113,7 +118,7 @@ NoHuffman *obter_frequencia_caracter(FILE *arquivo, int arr_frequencia[TAMANHO_A
             inserir_na_fila_prioridade(&fila_prioridade, arr_frequencia[i], i, tamanho_atual_lista);
         }
     }
-    
+
     // Retorna a fila de prioridade com os caracteres e suas frequências
     return fila_prioridade;
 }
@@ -121,7 +126,7 @@ NoHuffman *obter_frequencia_caracter(FILE *arquivo, int arr_frequencia[TAMANHO_A
 NoHuffman *construir_arvore_huffman(NoHuffman **fila, int *tamanho_atual_lista)
 {
     /**
-     * O parâmetro tamanho_atual_lista é um ponteiro porque precisa 
+     * O parâmetro tamanho_atual_lista é um ponteiro porque precisa
      * ser atualizado na função que chama essa função.
      */
     NoHuffman *esquerda, *direita, *no_pai;
@@ -170,16 +175,16 @@ void gerar_Nova_Tabela_ASCII_Hufmman(NoHuffman *raiz, dado_objeto table[], dado_
         // Se existe um nó à esquerda, gera o código para o filho esquerdo
         if (raiz->esquerda != NULL)
         {
-            dado_objeto esquerdaCode = codigo_parafolha; // Cria uma cópia do código atual
-            esquerdaCode.conteudo <<= 1; // Adiciona um 0 ao código (movendo para a esquerda)
+            dado_objeto esquerdaCode = codigo_parafolha;                          // Cria uma cópia do código atual
+            esquerdaCode.conteudo <<= 1;                                          // Adiciona um 0 ao código (movendo para a esquerda)
             gerar_Nova_Tabela_ASCII_Hufmman(raiz->esquerda, table, esquerdaCode); // Chamada recursiva para o filho esquerdo
         }
     case 2:
         // Se existe um nó à direita, gera o código para o filho direito
         if (raiz->direita != NULL)
         {
-            dado_objeto direitaCode = codigo_parafolha; // Cria uma cópia do código atual
-            direitaCode.conteudo = (direitaCode.conteudo << 1) | 1; // Adiciona um 1 ao código (movendo para a esquerda e adicionando 1)
+            dado_objeto direitaCode = codigo_parafolha;                         // Cria uma cópia do código atual
+            direitaCode.conteudo = (direitaCode.conteudo << 1) | 1;             // Adiciona um 1 ao código (movendo para a esquerda e adicionando 1)
             gerar_Nova_Tabela_ASCII_Hufmman(raiz->direita, table, direitaCode); // Chamada recursiva para o filho direito
         }
         break; // Encerra o switch
@@ -188,7 +193,7 @@ void gerar_Nova_Tabela_ASCII_Hufmman(NoHuffman *raiz, dado_objeto table[], dado_
 // 4º Função chamada
 int calcular_tamanho_lixo(int frequencia[], dado_objeto dados[])
 {
-    long bit_antes = 0; // Total de bits antes da compressão (considerando 8 bits por caractere)
+    long bit_antes = 0;  // Total de bits antes da compressão (considerando 8 bits por caractere)
     long bit_depois = 0; // Total de bits depois da compressão (considerando os tamanhos dos códigos de Huffman)
 
     // Itera sobre cada possível caractere ASCII
@@ -230,12 +235,12 @@ void escrever_cabecalho_inicial(FILE *arquivo_comprimido, int tamanho_lixo, int 
 {
     // Declaração de variáveis para armazenar os bits a serem escritos no arquivo
     unsigned char primeiro_bit = 0; // Armazena o primeiro byte a ser gravado
-    unsigned char segundo_bit = 0;   // Armazena o segundo byte a ser gravado
+    unsigned char segundo_bit = 0;  // Armazena o segundo byte a ser gravado
 
     // O tamanho do lixo é deslocado para a esquerda em 5 bits e armazenado no primeiro_bit
     primeiro_bit = primeiro_bit | (tamanho_lixo << 5);
 
-    // O tamanho da árvore é deslocado para a direita em 8 bits (pega os bits mais significativos) 
+    // O tamanho da árvore é deslocado para a direita em 8 bits (pega os bits mais significativos)
     // e é adicionado ao primeiro_bit
     primeiro_bit = primeiro_bit | (tamanho_arvore >> 8);
 
@@ -244,7 +249,7 @@ void escrever_cabecalho_inicial(FILE *arquivo_comprimido, int tamanho_lixo, int 
 
     // Escreve o primeiro byte no arquivo comprimido
     fwrite(&primeiro_bit, sizeof(unsigned char), 1, arquivo_comprimido);
-    
+
     // Escreve o segundo byte no arquivo comprimido
     fwrite(&segundo_bit, sizeof(unsigned char), 1, arquivo_comprimido);
 }
@@ -271,7 +276,7 @@ void escrever_arvore_pre_ordem(FILE *arquivo_comprimido, NoHuffman *preorder)
 
     // Chama recursivamente para o filho à esquerda
     escrever_arvore_pre_ordem(arquivo_comprimido, preorder->esquerda);
-    
+
     // Chama recursivamente para o filho à direita
     escrever_arvore_pre_ordem(arquivo_comprimido, preorder->direita);
 }
@@ -280,8 +285,8 @@ void gravarCodigos(FILE *arquivoComprimido, FILE *arquivoPraComprimir, dado_obje
 {
     // Inicializa variáveis para acumular os bits e controlar o tamanho do acumulador
     uint8_t acumulador_bits = 0; // Acumulador para armazenar os bits a serem escritos
-    int tamanho_acumulador = 0; // Contador para rastrear quantos bits estão no acumulador
-    int caractere;// Variável para armazenar o caractere lido do arquivo de entrada
+    int tamanho_acumulador = 0;  // Contador para rastrear quantos bits estão no acumulador
+    int caractere;               // Variável para armazenar o caractere lido do arquivo de entrada
 
     // Lê cada caractere do arquivo a ser comprimido até o final do arquivo (EOF)
     while ((caractere = getc(arquivoPraComprimir)) != EOF)
@@ -302,7 +307,7 @@ void gravarCodigos(FILE *arquivoComprimido, FILE *arquivoPraComprimir, dado_obje
             {
                 // Escreve o byte acumulado no arquivo comprimido
                 fwrite(&acumulador_bits, sizeof(uint8_t), 1, arquivoComprimido);
-                acumulador_bits = 0; // Reseta o acumulador para novos bits
+                acumulador_bits = 0;    // Reseta o acumulador para novos bits
                 tamanho_acumulador = 0; // Reseta o contador de bits
             }
         }
@@ -312,7 +317,7 @@ void gravarCodigos(FILE *arquivoComprimido, FILE *arquivoPraComprimir, dado_obje
     if (tamanho_acumulador > 0)
     {
         // Desloca os bits restantes para a esquerda para completar o byte
-        acumulador_bits <<= tamanho_lixo; // Preenche os bits restantes com zeros
+        acumulador_bits <<= tamanho_lixo;                                // Preenche os bits restantes com zeros
         fwrite(&acumulador_bits, sizeof(uint8_t), 1, arquivoComprimido); // Escreve o último byte no arquivo
     }
 }
