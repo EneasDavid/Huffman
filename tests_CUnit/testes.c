@@ -75,7 +75,7 @@ void test_e_folha()
     liberar_no_huffman(no_nao_folha);           // Libera o nó não folha
 }
 
-//*TESTES COMPRESSÃO
+// TESTES COMPRESSÃO
 
 // Teste da função fila_prioridade_vazia
 void test_fila_prioridade_vazia()
@@ -213,7 +213,7 @@ void test_construir_arvore_huffman()
     inserir_na_fila_prioridade(&fila, 2, 'd', &tamanho_atual_lista);
 
     // Chama a função para construir a árvore de Huffman
-    NoHuffman *raiz = construir_arvore_huffman(&fila, &tamanho_atual_lista);
+    NoHuffman *raiz = construir_arvore_huffman(&fila, tamanho_atual_lista);
 
     // Verifica se a raiz da árvore foi criada corretamente
     CU_ASSERT(raiz != NULL);
@@ -425,7 +425,7 @@ void test_gravarCodigos()
     remove("entrada_test.txt");
 }
 
-//*TESTES DESCOMPRESSÃO
+// TESTES DESCOMPRESSÃO
 
 // Teste da função bit_ta_ativo
 void test_bit_ta_ativo()
@@ -571,7 +571,7 @@ void test_descomprimir_arquivo_usando_huffman()
     remove("test_saida_descomprimido.bin");
 }
 
-// *HUFFMAN.H
+// HUFFMAN.H
 
 // Teste da função comprimir
 void test_comprimir()
@@ -620,7 +620,7 @@ void test_descomprimir()
     const char *caminho_arquivo_descomprimido = "test_entrada_descomprimido.txt";
 
     // Chama a função para descomprimir o arquivo
-    descomprimir((char *)caminho_arquivo_comprimido, (char *)caminho_arquivo_descomprimido);
+    descomprimir((char *)caminho_arquivo_comprimido);
 
     // Verifica se o arquivo descomprimido foi criado
     FILE *arquivo_descomprimido = fopen(caminho_arquivo_descomprimido, "rb");
@@ -662,36 +662,36 @@ int main()
     CU_add_test(suite, "Teste de recuperar_caracter_ponteiro_void", test_recuperar_caracter_ponteiro_void);
     CU_add_test(suite, "Teste de e_folha", test_e_folha);
 
-    CU_pSuite suite = CU_add_suite("Suite de Testes COMPRESSAO", NULL, NULL);
+    CU_pSuite suite2 = CU_add_suite("suite de Testes COMPRESSAO", NULL, NULL);
 
     //* ALGORITMO_COMPRESSAO.H
-    CU_add_test(suite, "Teste da fila_prioridade_vazia", test_fila_prioridade_vazia);
-    CU_add_test(suite, "Teste de inserir_na_fila_prioridade", test_inserir_na_fila_prioridade);
-    CU_add_test(suite, "Teste de remover_da_fila_prioridade", test_remover_da_fila_prioridade);
-    CU_add_test(suite, "Teste de obter_frequencia_caracter", test_obter_frequencia_caracter);
-    CU_add_test(suite, "Teste de construir_arvore_huffman", test_construir_arvore_huffman);
-    CU_add_test(suite, "Teste de gerar_Nova_Tabela_ASCII_Hufmman", test_gerar_Nova_Tabela_ASCII_Hufmman);
-    CU_add_test(suite, "Teste de calcular_tamanho_lixo", test_calcular_tamanho_lixo);
-    CU_add_test(suite, "Teste de calcular_tamanho_arvore", test_calcular_tamanho_arvore);
-    CU_add_test(suite, "Teste de escrever_cabecalho_inicial", test_escrever_cabecalho_inicial);
-    CU_add_test(suite, "Teste de escrever_arvore_pre_ordem", test_escrever_arvore_pre_ordem);
-    CU_add_test(suite, "Teste de gravarCodigos", test_gravarCodigos);
+    CU_add_test(suite2, "Teste da fila_prioridade_vazia", test_fila_prioridade_vazia);
+    CU_add_test(suite2, "Teste de inserir_na_fila_prioridade", test_inserir_na_fila_prioridade);
+    CU_add_test(suite2, "Teste de remover_da_fila_prioridade", test_remover_da_fila_prioridade);
+    CU_add_test(suite2, "Teste de obter_frequencia_caracter", test_obter_frequencia_caracter);
+    CU_add_test(suite2, "Teste de construir_arvore_huffman", test_construir_arvore_huffman);
+    CU_add_test(suite2, "Teste de gerar_Nova_Tabela_ASCII_Hufmman", test_gerar_Nova_Tabela_ASCII_Hufmman);
+    CU_add_test(suite2, "Teste de calcular_tamanho_lixo", test_calcular_tamanho_lixo);
+    CU_add_test(suite2, "Teste de calcular_tamanho_arvore", test_calcular_tamanho_arvore);
+    CU_add_test(suite2, "Teste de escrever_cabecalho_inicial", test_escrever_cabecalho_inicial);
+    CU_add_test(suite2, "Teste de escrever_arvore_pre_ordem", test_escrever_arvore_pre_ordem);
+    CU_add_test(suite2, "Teste de gravarCodigos", test_gravarCodigos);
 
-    CU_pSuite suite = CU_add_suite("Suite de Testes DESCOMPRESSAO", NULL, NULL);
+    CU_pSuite suite3 = CU_add_suite("Suite de Testes DESCOMPRESSAO", NULL, NULL);
 
     //* ALGORITMO_DESCOMPRESSAO.H
-    CU_add_test(suite, "Teste de bit_ta_ativo", test_bit_ta_ativo);
-    CU_add_test(suite, "Teste de obter_lixo", test_obter_lixo);
-    CU_add_test(suite, "Teste de obter_tamanho_arvore", test_obter_tamanho_arvore);
-    CU_add_test(suite, "Teste de obterTamanhoCompressao", test_obterTamanhoCompressao);
-    CU_add_test(suite, "Teste de reconstruir_arvore_huffman", test_reconstruir_arvore_huffman);
-    CU_add_test(suite, "Teste de descomprimir_arquivo_usando_huffman", test_descomprimir_arquivo_usando_huffman);
+    CU_add_test(suite3, "Teste de bit_ta_ativo", test_bit_ta_ativo);
+    CU_add_test(suite3, "Teste de obter_lixo", test_obter_lixo);
+    CU_add_test(suite3, "Teste de obter_tamanho_arvore", test_obter_tamanho_arvore);
+    CU_add_test(suite3, "Teste de obterTamanhoCompressao", test_obterTamanhoCompressao);
+    CU_add_test(suite3, "Teste de reconstruir_arvore_huffman", test_reconstruir_arvore_huffman);
+    CU_add_test(suite3, "Teste de descomprimir_arquivo_usando_huffman", test_descomprimir_arquivo_usando_huffman);
 
-    CU_pSuite suite = CU_add_suite("Suite de Testes HUFFMAN", NULL, NULL);
+    CU_pSuite suite4 = CU_add_suite("Suite de Testes HUFFMAN", NULL, NULL);
 
     //* HUFFMAN.H
-    CU_add_test(suite, "Teste de comprimir", test_comprimir);
-    CU_add_test(suite, "Teste de descomprimir", test_descomprimir);
+    CU_add_test(suite4, "Teste de comprimir", test_comprimir);
+    CU_add_test(suite4, "Teste de descomprimir", test_descomprimir);
 
     CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
