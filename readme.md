@@ -34,9 +34,6 @@ gcc -o huff src/utils.c src/algoritimo_compressao.c src/algoritimo_descompressao
 ./huff
 ```
 
-## Participantes
-
-
 ## Integrantes
 | Discente | Curso | 
 | -------- | -------- |
