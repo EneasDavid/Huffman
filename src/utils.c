@@ -6,7 +6,7 @@
 int mensagem_inicial()
 {
     // Exibe as opções para o usuário
-    puts("0 - Encerrar execução\n");
+    puts("0 - Encerrar\n");
     puts("1 - Comprimir\n");
     puts("2 - Descomprimir\n");
 
