@@ -10,9 +10,9 @@ int mensagem_inicial()
     puts("1 - Comprimir\n");
     puts("2 - Descomprimir\n");
 
-    int escolha; // Variável para armazenar a escolha do usuário
+    int escolha;           // Variável para armazenar a escolha do usuário
     scanf("%d", &escolha); // Lê a escolha do usuário
-    return escolha; // Retorna a escolha
+    return escolha;        // Retorna a escolha
 }
 
 // Função que aloca memória para um byte e retorna um ponteiro genérico (void)
@@ -20,7 +20,7 @@ void *ponteiro_void(unsigned char byte)
 {
     // Aloca memória para um ponteiro de byte
     unsigned char *ponteiro = malloc(sizeof(unsigned char));
-    *ponteiro = byte; // Atribui o byte à memória alocada
+    *ponteiro = byte;        // Atribui o byte à memória alocada
     return (void *)ponteiro; // Retorna o ponteiro como void
 }
 
@@ -43,18 +43,18 @@ NoHuffman *criar_no_huffman(char caracter, int frequencia)
 {
     NoHuffman *novo_no = (NoHuffman *)malloc(sizeof(NoHuffman));
 
-    novo_no->frequencia = frequencia; 
+    novo_no->frequencia = frequencia;
 
     // Atribui o caractere ao nó usando a função ponteiro_void
     novo_no->caractere = *((char *)ponteiro_void(caracter));
     /*
-     * pela instancia ser inicialmente uma fila de prioridade 
-     * os dados abaio são nulos, automaticamente, que depois 
+     * pela instancia ser inicialmente uma fila de prioridade
+     * os dados abaixo são nulos, automaticamente, que depois
      * podem vir a serem preenchidos
-    */
-    novo_no->proximo = NULL; // Inicializa o ponteiro para o próximo nó como NULL
+     */
+    novo_no->proximo = NULL;  // Inicializa o ponteiro para o próximo nó como NULL
     novo_no->esquerda = NULL; // Inicializa o ponteiro para o filho esquerdo como NULL
-    novo_no->direita = NULL; // Inicializa o ponteiro para o filho direito como NULL
+    novo_no->direita = NULL;  // Inicializa o ponteiro para o filho direito como NULL
 
     return novo_no; // Retorna o novo nó de Huffman criado
 }

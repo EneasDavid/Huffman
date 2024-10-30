@@ -9,7 +9,8 @@
 void comprimir(char *caminho_arquivo)
 {
     FILE *arquivo_para_comprimir = fopen(caminho_arquivo, "rb");
-    FILE *arquivo_comprimido = fopen("compress.huff", "wb");
+    strcat(caminho_arquivo, ".huff");
+    FILE *arquivo_comprimido = fopen(caminho_arquivo, "wb");
 
     NoHuffman *fila_prioridade = NULL;
 
