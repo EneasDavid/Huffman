@@ -169,26 +169,19 @@ void gerar_Nova_Tabela_ASCII_Hufmman(NoHuffman *raiz, dado_objeto table[], dado_
     // Incrementa o tamanho do código a cada nível da árvore
     codigo_parafolha.tamanho++;
 
-    // Switch case para controlar a geração de códigos para as folhas
-    switch (1)
+    // Se existe um nó à esquerda, gera o código para o filho esquerdo
+    if (raiz->esquerda != NULL)
     {
-    case 1:
-        // Se existe um nó à esquerda, gera o código para o filho esquerdo
-        if (raiz->esquerda != NULL)
-        {
-            dado_objeto esquerdaCode = codigo_parafolha;                          // Cria uma cópia do código atual
-            esquerdaCode.conteudo <<= 1;                                          // Adiciona um 0 ao código (movendo para a esquerda)
-            gerar_Nova_Tabela_ASCII_Hufmman(raiz->esquerda, table, esquerdaCode); // Chamada recursiva para o filho esquerdo
-        }
-    case 2:
-        // Se existe um nó à direita, gera o código para o filho direito
-        if (raiz->direita != NULL)
-        {
-            dado_objeto direitaCode = codigo_parafolha;                         // Cria uma cópia do código atual
-            direitaCode.conteudo = (direitaCode.conteudo << 1) | 1;             // Adiciona um 1 ao código (movendo para a esquerda e adicionando 1)
-            gerar_Nova_Tabela_ASCII_Hufmman(raiz->direita, table, direitaCode); // Chamada recursiva para o filho direito
-        }
-        break; // Encerra o switch
+        dado_objeto esquerdaCode = codigo_parafolha;                          // Cria uma cópia do código atual
+        esquerdaCode.conteudo <<= 1;                                          // Adiciona um 0 ao código (movendo para a esquerda)
+        gerar_Nova_Tabela_ASCII_Hufmman(raiz->esquerda, table, esquerdaCode); // Chamada recursiva para o filho esquerdo
+    }
+    // Se existe um nó à direita, gera o código para o filho direito
+    if (raiz->direita != NULL)
+    {
+        dado_objeto direitaCode = codigo_parafolha;                         // Cria uma cópia do código atual
+        direitaCode.conteudo = (direitaCode.conteudo << 1) | 1;             // Adiciona um 1 ao código (movendo para a esquerda e adicionando 1)
+        gerar_Nova_Tabela_ASCII_Hufmman(raiz->direita, table, direitaCode); // Chamada recursiva para o filho direito
     }
 }
 // 4º Função chamada
