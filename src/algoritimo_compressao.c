@@ -10,6 +10,7 @@ int fila_prioridade_vazia(NoHuffman *fila)
 {
     return fila == NULL;
 }
+
 NoHuffman *inserir_na_fila_prioridade(NoHuffman **fila, int frequencia, char caracter, int *tamanho_atual_lista)
 {
     /**
