@@ -58,3 +58,25 @@ NoHuffman *criar_no_huffman(char caracter, int frequencia)
 
     return novo_no; // Retorna o novo nó de Huffman criado
 }
+
+// Função para liberar memória de NoHuffman depois dos testes unitários
+void liberar_no_huffman(NoHuffman *no)
+{
+    if (no)
+    {
+        liberar_no_huffman(no->esquerda);
+        liberar_no_huffman(no->direita);
+        free(no);
+    }
+}
+
+// Função para liberar memória da árvore depois dos testes unitários
+void liberar_arvore_huffman(NoHuffman *raiz)
+{
+    if (raiz != NULL)
+    {
+        liberar_arvore_huffman(raiz->esquerda); // Libera a subárvore esquerda
+        liberar_arvore_huffman(raiz->direita);  // Libera a subárvore direita
+        free(raiz);                             // Libera o nó atual
+    }
+}

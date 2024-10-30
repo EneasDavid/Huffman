@@ -6,6 +6,9 @@
 #include "../libs/algoritimo_descompressao.h"
 #include "../libs/algoritimo_compressao.h"
 
+// TESTES LIBS
+
+//*UTILS.H
 // Teste da função criar_no_huffman
 void test_criar_no_huffman()
 {
@@ -31,13 +34,6 @@ void test_criar_dado_objeto()
 
     CU_ASSERT(obj.conteudo == 255); // Verifica se o conteúdo está correto
     CU_ASSERT(obj.tamanho == 8);    // Verifica se o tamanho está correto
-}
-
-// Teste da função mensagem_inicial
-void test_mensagem_inicial()
-{
-    // Verifica se a função executa sem erros
-    CU_ASSERT_NO_ERROR(mensagem_inicial());
 }
 
 // Teste da função ponteiro_void
@@ -393,52 +389,6 @@ void test_escrever_arvore_pre_ordem()
     remove("arvore_test.bin");
 }
 
-// Teste da função escrever_arvore_pre_ordem
-void test_escrever_arvore_pre_ordem()
-{
-    FILE *arquivo = fopen("arvore_test.bin", "wb"); // Cria um arquivo binário para teste
-
-    // Cria uma árvore de Huffman manualmente
-    NoHuffman *raiz = (NoHuffman *)malloc(sizeof(NoHuffman));
-    raiz->caractere = '*';
-    raiz->frequencia = 12;
-
-    NoHuffman *folhaA = (NoHuffman *)malloc(sizeof(NoHuffman));
-    folhaA->caractere = 'a';
-    folhaA->frequencia = 5;
-    raiz->esquerda = folhaA;
-
-    NoHuffman *folhaB = (NoHuffman *)malloc(sizeof(NoHuffman));
-    folhaB->caractere = 'b';
-    folhaB->frequencia = 3;
-    raiz->direita = folhaB;
-
-    // Chama a função para escrever a árvore
-    escrever_arvore_pre_ordem(arquivo, raiz);
-    fclose(arquivo); // Fecha o arquivo
-
-    // Abre o arquivo novamente para leitura
-    arquivo = fopen("arvore_test.bin", "rb");
-    uint8_t caractere;
-
-    // Lê os caracteres gravados e verifica
-    fread(&caractere, sizeof(uint8_t), 1, arquivo);
-    CU_ASSERT(caractere == '*'); // Verifica o caractere da raiz
-    fread(&caractere, sizeof(uint8_t), 1, arquivo);
-    CU_ASSERT(caractere == 'a'); // Verifica o caractere da folha A
-    fread(&caractere, sizeof(uint8_t), 1, arquivo);
-    CU_ASSERT(caractere == 'b'); // Verifica o caractere da folha B
-    fclose(arquivo);             // Fecha o arquivo
-
-    // Libera a memória
-    free(folhaA);
-    free(folhaB);
-    free(raiz);
-
-    // Remove o arquivo de teste
-    remove("arvore_test.bin");
-}
-
 // Teste da função gravarCodigos
 void test_gravarCodigos()
 {
@@ -458,7 +408,7 @@ void test_gravarCodigos()
     // Chama a função para gravar os códigos
     arquivoPraComprimir = fopen("entrada_test.txt", "r");             // Reabre o arquivo de entrada para leitura
     gravarCodigos(arquivoComprimido, arquivoPraComprimir, tabela, 0); // Tamanho de lixo = 0
-    fclose(arquivoPraComprimido);                                     // Fecha o arquivo de entrada
+    fclose(arquivoPraComprimir);                                      // Fecha o arquivo de entrada
     fclose(arquivoComprimido);                                        // Fecha o arquivo comprimido
 
     // Abre o arquivo comprimido para verificar o conteúdo
@@ -574,7 +524,7 @@ void test_reconstruir_arvore_huffman()
     CU_ASSERT(arvore->direita->direita->esquerda->caractere == 'c'); // Folha deve ser 'c'
 
     // Libere a memória alocada pela árvore (implementação da função para liberar memória necessária)
-    liberar_arvore(arvore);
+    liberar_arvore_huffman(arvore);
 }
 
 // Teste da função descomprimir_arquivo_usando_huffman
@@ -614,7 +564,7 @@ void test_descomprimir_arquivo_usando_huffman()
     CU_ASSERT(memcmp(resultado, dados, sizeof(dados)) == 0); // O resultado deve ser igual aos dados originais
 
     // Libere a memória alocada pela árvore (implementação da função para liberar memória necessária)
-    liberar_arvore(arvore_huffman);
+    liberar_arvore_huffman(arvore_huffman);
 
     // Remove os arquivos de teste
     remove("test_descomprimido.bin");
@@ -703,19 +653,18 @@ int main()
 {
     CU_initialize_registry();
 
-    CU_set_output_filename("resultados_teste");
+    CU_pSuite suite = CU_add_suite("Suite de Testes UTILS", NULL, NULL);
 
-    CU_pSuite suite = CU_add_suite("Suite de Testes HUFFMAN", NULL, NULL);
-
-    // *UTILS.H
+    //* UTILS.H
     CU_add_test(suite, "Teste da criação do nó Huffman", test_criar_no_huffman);
     CU_add_test(suite, "Teste da criação do dado_objeto", test_criar_dado_objeto);
-    CU_add_test(suite, "Teste da mensagem inicial", test_mensagem_inicial);
     CU_add_test(suite, "Teste do ponteiro_void", test_ponteiro_void);
     CU_add_test(suite, "Teste de recuperar_caracter_ponteiro_void", test_recuperar_caracter_ponteiro_void);
     CU_add_test(suite, "Teste de e_folha", test_e_folha);
 
-    // *ALGORITMO_COMPRESSAO.H
+    CU_pSuite suite = CU_add_suite("Suite de Testes COMPRESSAO", NULL, NULL);
+
+    //* ALGORITMO_COMPRESSAO.H
     CU_add_test(suite, "Teste da fila_prioridade_vazia", test_fila_prioridade_vazia);
     CU_add_test(suite, "Teste de inserir_na_fila_prioridade", test_inserir_na_fila_prioridade);
     CU_add_test(suite, "Teste de remover_da_fila_prioridade", test_remover_da_fila_prioridade);
@@ -728,7 +677,9 @@ int main()
     CU_add_test(suite, "Teste de escrever_arvore_pre_ordem", test_escrever_arvore_pre_ordem);
     CU_add_test(suite, "Teste de gravarCodigos", test_gravarCodigos);
 
-    // *ALGORITMO_DESCOMPRESSAO.H
+    CU_pSuite suite = CU_add_suite("Suite de Testes DESCOMPRESSAO", NULL, NULL);
+
+    //* ALGORITMO_DESCOMPRESSAO.H
     CU_add_test(suite, "Teste de bit_ta_ativo", test_bit_ta_ativo);
     CU_add_test(suite, "Teste de obter_lixo", test_obter_lixo);
     CU_add_test(suite, "Teste de obter_tamanho_arvore", test_obter_tamanho_arvore);
@@ -736,10 +687,13 @@ int main()
     CU_add_test(suite, "Teste de reconstruir_arvore_huffman", test_reconstruir_arvore_huffman);
     CU_add_test(suite, "Teste de descomprimir_arquivo_usando_huffman", test_descomprimir_arquivo_usando_huffman);
 
-    // *HUFFMAN.H
+    CU_pSuite suite = CU_add_suite("Suite de Testes HUFFMAN", NULL, NULL);
+
+    //* HUFFMAN.H
     CU_add_test(suite, "Teste de comprimir", test_comprimir);
     CU_add_test(suite, "Teste de descomprimir", test_descomprimir);
 
+    CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
     CU_cleanup_registry();
 
