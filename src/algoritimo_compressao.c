@@ -267,13 +267,13 @@ void escrever_arvore_pre_ordem(FILE *arquivo_comprimido, NoHuffman *preorder)
     if (e_folha(preorder) && (preorder->caractere == '\\' || preorder->caractere == '*'))
     {
         // Se for uma folha especial, escreve o caractere de escape '\\' no arquivo
-        uint8_t pica_a_mula = (uint8_t)'\\';
-        fwrite(&pica_a_mula, sizeof(uint8_t), 1, arquivo_comprimido);
+        unsigned char pica_a_mula = (unsigned char)'\\';
+        fwrite(&pica_a_mula, sizeof(unsigned char), 1, arquivo_comprimido);
     }
 
     // Escreve o caractere do nó atual no arquivo
-    uint8_t caractere = (uint8_t)preorder->caractere;
-    fwrite(&caractere, sizeof(uint8_t), 1, arquivo_comprimido);
+    unsigned char caractere = (unsigned char)preorder->caractere;
+    fwrite(&caractere, sizeof(unsigned char), 1, arquivo_comprimido);
 
     // Chama recursivamente para o filho à esquerda
     escrever_arvore_pre_ordem(arquivo_comprimido, preorder->esquerda);
@@ -285,29 +285,31 @@ void escrever_arvore_pre_ordem(FILE *arquivo_comprimido, NoHuffman *preorder)
 void gravarCodigos(FILE *arquivoComprimido, FILE *arquivoPraComprimir, dado_objeto tabela[], int tamanho_lixo)
 {
     // Inicializa variáveis para acumular os bits e controlar o tamanho do acumulador
-    uint8_t acumulador_bits = 0; // Acumulador para armazenar os bits a serem escritos
-    int tamanho_acumulador = 0;  // Contador para rastrear quantos bits estão no acumulador
-    int caractere;               // Variável para armazenar o caractere lido do arquivo de entrada
+    unsigned char acumulador_bits = 0; // Acumulador para armazenar os bits a serem escritos
+    int tamanho_acumulador = 0;        // Contador para rastrear quantos bits estão no acumulador
+    int caractere;                     // Variável para armazenar o caractere lido do arquivo de entrada
 
     // Lê cada caractere do arquivo a ser comprimido até o final do arquivo (EOF)
     while ((caractere = getc(arquivoPraComprimir)) != EOF)
     {
         // Obtém a entrada da tabela de Huffman correspondente ao caractere lido
-        dado_objeto entry = tabela[caractere];
+        dado_objeto index_tabela = tabela[caractere];
 
         // Percorre os bits do código Huffman do caractere da direita para a esquerda
-        for (int i = entry.tamanho - 1; i >= 0; --i)
+        for (int i = index_tabela.tamanho - 1; i >= 0; --i)
         {
             // Adiciona o bit atual ao acumulador, deslocando os bits para a esquerda
             // e utilizando uma operação bit a bit para definir o bit mais à direita
-            acumulador_bits = (acumulador_bits << 1) | ((entry.conteudo >> i) & 1);
+            acumulador_bits = (acumulador_bits << 1) | ((index_tabela.conteudo >> i) & 1);
+            // >> adciona na cauda
+            // << adciona na cabeça
             tamanho_acumulador++; // Incrementa o contador de bits no acumulador
 
             // Verifica se o acumulador está cheio (8 bits)
             if (tamanho_acumulador == 8)
             {
                 // Escreve o byte acumulado no arquivo comprimido
-                fwrite(&acumulador_bits, sizeof(uint8_t), 1, arquivoComprimido);
+                fwrite(&acumulador_bits, sizeof(unsigned char), 1, arquivoComprimido);
                 acumulador_bits = 0;    // Reseta o acumulador para novos bits
                 tamanho_acumulador = 0; // Reseta o contador de bits
             }
@@ -318,7 +320,7 @@ void gravarCodigos(FILE *arquivoComprimido, FILE *arquivoPraComprimir, dado_obje
     if (tamanho_acumulador > 0)
     {
         // Desloca os bits restantes para a esquerda para completar o byte
-        acumulador_bits <<= tamanho_lixo;                                // Preenche os bits restantes com zeros
-        fwrite(&acumulador_bits, sizeof(uint8_t), 1, arquivoComprimido); // Escreve o último byte no arquivo
+        acumulador_bits <<= tamanho_lixo;                                      // Preenche os bits restantes com zeros
+        fwrite(&acumulador_bits, sizeof(unsigned char), 1, arquivoComprimido); // Escreve o último byte no arquivo
     }
 }
