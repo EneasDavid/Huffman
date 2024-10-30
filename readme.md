@@ -17,7 +17,7 @@ O projeto consiste em implementar o algoritmo de Huffman para compressão de arq
 ## Instalação
 
 ```bash
-git clone <URL do repositório>
+git clone https://github.com/EneasDavid/Huffman/tree/main
 ```
 
 ## Método de Uso
