@@ -14,7 +14,7 @@ NoHuffman *obter_frequencia_caracter(FILE *arquivo, int arr_frequencia[TAMANHO_A
 
 NoHuffman *remover_da_fila_prioridade(NoHuffman **fila, int *tamanho_atual_lista);
 
-NoHuffman *construir_arvore_huffman(NoHuffman **fila, int *tamanho_atual_lista);
+NoHuffman *construir_arvore_huffman(NoHuffman **fila, int tamanho_atual_lista);
 
 int calcular_tamanho_lixo(int frequencia[], dado_objeto dados[]);
 

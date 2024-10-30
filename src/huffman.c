@@ -30,7 +30,7 @@ void comprimir(char *caminho_arquivo)
 
     fila_prioridade = obter_frequencia_caracter(arquivo_para_comprimir, arr_frequencia, &tamanho_atual);
 
-    construir_arvore_huffman(&fila_prioridade, &tamanho_atual);
+    construir_arvore_huffman(&fila_prioridade, tamanho_atual);
 
     dado_objeto dados_binarios, tabela[TAMANHO_ASCII];
 
@@ -55,8 +55,15 @@ void comprimir(char *caminho_arquivo)
     fclose(arquivo_comprimido);
 }
 
-void descomprimir(char *caminho_arquivo_comprimido, char *caminho_arquivo_descomprimido)
+void descomprimir(char *caminho_arquivo_comprimido)
 {
+    char caminho_arquivo_descomprimido[TAMANHO_ASCII];
+    strncpy(caminho_arquivo_descomprimido, caminho_arquivo_comprimido, sizeof(caminho_arquivo_descomprimido));
+    caminho_arquivo_descomprimido[sizeof(caminho_arquivo_descomprimido) - 1] = '\0'; // Garante terminação
+    
+    // Remove ".huff" do final, se presente
+    char *extensao = strstr(caminho_arquivo_descomprimido, ".huff");    
+   
     FILE *arquivo_comprimido = fopen(caminho_arquivo_comprimido, "rb");
     if (!arquivo_comprimido)
     {

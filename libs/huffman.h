@@ -10,6 +10,6 @@
 
 void comprimir(char *caminho_arquivo);
 
-void descomprimir(char *caminho_arquivo_comprimido, char *caminho_arquivo_descomprimido);
+void descomprimir(char *caminho_arquivo_comprimido);
 
 #endif

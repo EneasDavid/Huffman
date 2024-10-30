@@ -124,7 +124,7 @@ NoHuffman *obter_frequencia_caracter(FILE *arquivo, int arr_frequencia[TAMANHO_A
     return fila_prioridade;
 }
 // 2º segunda função chamada
-NoHuffman *construir_arvore_huffman(NoHuffman **fila, int *tamanho_atual_lista)
+NoHuffman *construir_arvore_huffman(NoHuffman **fila, int tamanho_atual_lista)
 {
     /**
      * O parâmetro tamanho_atual_lista é um ponteiro porque precisa
@@ -133,18 +133,18 @@ NoHuffman *construir_arvore_huffman(NoHuffman **fila, int *tamanho_atual_lista)
     NoHuffman *esquerda, *direita, *no_pai;
 
     // Enquanto houver mais de um nó na fila de prioridade
-    while (*tamanho_atual_lista > 1)
+    while (tamanho_atual_lista > 1)
     {
         // Remove os dois nós com menor frequência da fila
-        esquerda = remover_da_fila_prioridade(fila, tamanho_atual_lista);
-        direita = remover_da_fila_prioridade(fila, tamanho_atual_lista);
+        esquerda = remover_da_fila_prioridade(fila, &tamanho_atual_lista);
+        direita = remover_da_fila_prioridade(fila, &tamanho_atual_lista);
 
         // Combina as frequências dos dois nós removidos
         int frequencia_combinada = esquerda->frequencia + direita->frequencia;
 
         // Cria um novo nó pai com a frequência combinada
         // O caractere é definido como '*' indicando que é um nó interno
-        no_pai = inserir_na_fila_prioridade(fila, frequencia_combinada, '*', tamanho_atual_lista);
+        no_pai = inserir_na_fila_prioridade(fila, frequencia_combinada, '*', &tamanho_atual_lista);
 
         // Define os nós filho (esquerdo e direito) do nó pai
         no_pai->esquerda = esquerda;

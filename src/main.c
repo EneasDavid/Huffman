@@ -11,7 +11,7 @@ int main()
     do
     {
         escolha = mensagem_inicial();
-        if (!escolha)
+        if (escolha==0)
         {
             break;
         }
@@ -29,10 +29,7 @@ int main()
             break;
 
         case 2:
-            printf("Digite como deve ser salvo o arquivo. Exemplo: 'imagem.png': ");
-            char caminho_descompressao[TAMANHO_ASCII];
-            scanf("%s", caminho_descompressao);
-            descomprimir(caminho, caminho_descompressao);
+            descomprimir(caminho);
             break;
 
         default:
