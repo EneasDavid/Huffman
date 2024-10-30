@@ -369,14 +369,14 @@ void test_escrever_arvore_pre_ordem()
 
     // Abre o arquivo novamente para leitura
     arquivo = fopen("arvore_test.bin", "rb");
-    uint8_t caractere;
+    unsigned char caractere;
 
     // Lê os caracteres gravados e verifica
-    fread(&caractere, sizeof(uint8_t), 1, arquivo);
+    fread(&caractere, sizeof(unsigned char), 1, arquivo);
     CU_ASSERT(caractere == '*'); // Verifica o caractere da raiz
-    fread(&caractere, sizeof(uint8_t), 1, arquivo);
+    fread(&caractere, sizeof(unsigned char), 1, arquivo);
     CU_ASSERT(caractere == 'a'); // Verifica o caractere da folha A
-    fread(&caractere, sizeof(uint8_t), 1, arquivo);
+    fread(&caractere, sizeof(unsigned char), 1, arquivo);
     CU_ASSERT(caractere == 'b'); // Verifica o caractere da folha B
     fclose(arquivo);             // Fecha o arquivo
 
@@ -413,10 +413,10 @@ void test_gravarCodigos()
 
     // Abre o arquivo comprimido para verificar o conteúdo
     arquivoComprimido = fopen("comprimido_test.bin", "rb");
-    uint8_t byte_lido;
+    unsigned char byte_lido;
 
     // Lê os bytes gravados e verifica
-    fread(&byte_lido, sizeof(uint8_t), 1, arquivoComprimido);
+    fread(&byte_lido, sizeof(unsigned char), 1, arquivoComprimido);
     CU_ASSERT(byte_lido == 0b00011000); // Verifica o byte acumulado (código de 'a' e 'b')
     fclose(arquivoComprimido);          // Fecha o arquivo comprimido
 

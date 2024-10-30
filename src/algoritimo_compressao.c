@@ -284,6 +284,22 @@ void escrever_arvore_pre_ordem(FILE *arquivo_comprimido, NoHuffman *preorder)
 // 8º Função chamada
 void gravarCodigos(FILE *arquivoComprimido, FILE *arquivoPraComprimir, dado_objeto tabela[], int tamanho_lixo)
 {
+    /*
+     * Função para gravar os códigos Huffman de cada caractere em um arquivo comprimido.
+     *
+     * Parâmetros:
+     * - arquivoComprimido: ponteiro para o arquivo onde os dados comprimidos serão armazenados.
+     * - arquivoPraComprimir: ponteiro para o arquivo de entrada a ser comprimido.
+     * - tabela: vetor contendo os códigos Huffman para cada caractere.
+     * - tamanho_lixo: quantidade de bits adicionais para completar o último byte.
+     *
+     * A função lê o arquivo de entrada caractere por caractere, busca o código Huffman
+     * correspondente na tabela e escreve esse código bit a bit em um acumulador.
+     * Quando o acumulador atinge 8 bits (1 byte), ele é escrito no arquivo comprimido.
+     * No final do arquivo, caso existam bits restantes, eles são preenchidos com zeros
+     * à direita para completar o último byte antes da gravação.
+     */
+
     // Inicializa variáveis para acumular os bits e controlar o tamanho do acumulador
     unsigned char acumulador_bits = 0; // Acumulador para armazenar os bits a serem escritos
     int tamanho_acumulador = 0;        // Contador para rastrear quantos bits estão no acumulador
