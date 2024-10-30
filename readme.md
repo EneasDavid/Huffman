@@ -42,7 +42,7 @@ gcc -o huff src/utils.c src/algoritimo_compressao.c src/algoritimo_descompressao
 | -------- | -------- |
 | David Enéas | Ciência da Computação |  
 | Mayara Jacinto | Engenharia de Computação |
-| Julya | Engenharia de Computação | 
+| Júllya Cabral| Engenharia de Computação | 
 | Rafael Saleme | Engenharia de Computação |
 
 
