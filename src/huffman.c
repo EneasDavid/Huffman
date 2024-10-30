@@ -57,24 +57,31 @@ void comprimir(char *caminho_arquivo)
 
 void descomprimir(char *caminho_arquivo_comprimido)
 {
+    // Declara um array de caracteres para o nome do arquivo descomprimido
     char caminho_arquivo_descomprimido[TAMANHO_ASCII];
-    strncpy(caminho_arquivo_descomprimido, caminho_arquivo_comprimido, sizeof(caminho_arquivo_descomprimido));
-    caminho_arquivo_descomprimido[sizeof(caminho_arquivo_descomprimido) - 1] = '\0'; // Garante terminação
     
+    // Copia o caminho do arquivo comprimido para caminho_arquivo_descomprimido
+    strncpy(caminho_arquivo_descomprimido, caminho_arquivo_comprimido, sizeof(caminho_arquivo_descomprimido) - 1);
+    caminho_arquivo_descomprimido[sizeof(caminho_arquivo_descomprimido) - 1] = '\0'; // Garante terminação correta
+
     // Remove ".huff" do final, se presente
-    char *extensao = strstr(caminho_arquivo_descomprimido, ".huff");    
-   
+    char *extensao = strstr(caminho_arquivo_descomprimido, ".huff");
+    if (extensao && extensao == caminho_arquivo_descomprimido + strlen(caminho_arquivo_descomprimido) - strlen(".huff")) {
+        *extensao = '\0';  // Corta a string antes de ".huff"
+    }
+
+    // Abre o arquivo comprimido para leitura binária
     FILE *arquivo_comprimido = fopen(caminho_arquivo_comprimido, "rb");
-    if (!arquivo_comprimido)
-    {
+    if (!arquivo_comprimido) {
         printf("Problema ao abrir o arquivo comprimido\n");
         return;
     }
 
+    // Abre o arquivo descomprimido para escrita binária
     FILE *arquivo_descomprimido = fopen(caminho_arquivo_descomprimido, "wb");
-    if (!arquivo_descomprimido)
-    {
+    if (!arquivo_descomprimido) {
         printf("Problema ao abrir o arquivo descomprimido\n");
+        fclose(arquivo_comprimido);
         return;
     }
     short int lixo = obter_lixo(arquivo_comprimido);
