@@ -88,7 +88,13 @@ void descomprimir(char *caminho_arquivo_comprimido)
         strncat(caminho_arquivo_descomprimido, (char*)extensao, tamanho_extensao);
     }
     // Calcula o tamanho do arquivo comprimido excluindo a árvore e o lixo
-    unsigned long long int tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao = obterTamanhoCompressao(arquivo_comprimido) - ((2 + tamanho_arvore) + (tamanho_extensao + 1));
+    unsigned long long int tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao = obterTamanhoCompressao(arquivo_comprimido);
+
+    printf("tamanho_arq_comprimido: %llu\n", tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao);
+    tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao-= (2 + tamanho_arvore);
+    printf("tamanho_arq_comprimido_sem_arvore_sem_lixo: %llu\n", tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao);
+    tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao-= (tamanho_extensao + 1);
+    printf("tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao: %llu\n", tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao);
 
     // Abre o arquivo descomprimido para escrita binária
     FILE *arquivo_descomprimido = fopen(caminho_arquivo_descomprimido, "wb");
