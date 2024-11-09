@@ -71,16 +71,8 @@ void descomprimir(char *caminho_arquivo_comprimido)
     short int lixo = obter_lixo(arquivo_comprimido);
     short int tamanho_arvore = obter_tamanho_arvore(arquivo_comprimido);
 
-    // Calcula o tamanho do arquivo comprimido excluindo a árvore e o lixo
-    unsigned long long int tamanho_arq_comprimido_sem_arvore_sem_lixo = obterTamanhoCompressao(arquivo_comprimido) - (2 + tamanho_arvore);
-
     // Reconstrói a árvore de Huffman a partir do arquivo comprimido
     NoHuffman *arvore_huffman = reconstruir_arvore_huffman(arquivo_comprimido, &tamanho_arvore);
-    if (arvore_huffman == NULL) {
-        fprintf(stderr, "Erro ao reconstruir a árvore de Huffman\n");
-        fclose(arquivo_comprimido);
-        return;
-    }
 
     // Obtém a extensão original do arquivo comprimido
     int tamanho_extensao = obter_tamanho_extensao(arquivo_comprimido);
@@ -95,6 +87,8 @@ void descomprimir(char *caminho_arquivo_comprimido)
         strcat(caminho_arquivo_descomprimido, ".");
         strncat(caminho_arquivo_descomprimido, (char*)extensao, tamanho_extensao);
     }
+    // Calcula o tamanho do arquivo comprimido excluindo a árvore e o lixo
+    unsigned long long int tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao = obterTamanhoCompressao(arquivo_comprimido) - ((2 + tamanho_arvore) + (tamanho_extensao + 1));
 
     // Abre o arquivo descomprimido para escrita binária
     FILE *arquivo_descomprimido = fopen(caminho_arquivo_descomprimido, "wb");
@@ -108,7 +102,7 @@ void descomprimir(char *caminho_arquivo_comprimido)
     descomprimir_arquivo_usando_huffman(
         arquivo_comprimido,
         lixo,
-        tamanho_arq_comprimido_sem_arvore_sem_lixo,
+        tamanho_arq_comprimido_sem_arvore_sem_lixo_sem_extensao,
         arvore_huffman,
         arquivo_descomprimido
     );

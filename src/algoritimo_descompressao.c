@@ -100,8 +100,8 @@ unsigned long long int obterTamanhoCompressao(FILE *arquivo)
 
     // Retorna o ponteiro do arquivo para a posição original para não afetar outras operações
     fseek(arquivo, posicaoAtual, SEEK_SET);
-    //fseek
-    // Retorna o tamanho do arquivo em bytes
+    // fseek
+    //  Retorna o tamanho do arquivo em bytes
     return tamanho;
     /**
      * Exemplo:
@@ -110,9 +110,11 @@ unsigned long long int obterTamanhoCompressao(FILE *arquivo)
 }
 // Função para calcular o tamanho da extensão de um arquivo a partir do caminho do arquivo
 
-int obter_tamanho_extensao(FILE *arquivoCompactado) {
+int obter_tamanho_extensao(FILE *arquivoCompactado)
+{
     // Verifica se o arquivo foi aberto corretamente
-    if (arquivoCompactado == NULL) return -1; // Retorna -1 para indicar erro ao abrir o arquivo
+    if (arquivoCompactado == NULL)
+        return -1; // Retorna -1 para indicar erro ao abrir o arquivo
 
     unsigned char byte_lido;
 
@@ -120,53 +122,59 @@ int obter_tamanho_extensao(FILE *arquivoCompactado) {
     fread(&byte_lido, sizeof(unsigned char), 1, arquivoCompactado);
 
     // Os 3 primeiros bits representam o tamanho da extensão (no máximo 6)
-    int tamanho_extensao = byte_lido >> 5;  // Desloca os bits para a direita para alinhar o valor
+    int tamanho_extensao = byte_lido >> 5; // Desloca os bits para a direita para alinhar o valor
 
     // Verifica se o valor extraído é válido
-    if (tamanho_extensao > 6) {
+    if (tamanho_extensao > 6)
+    {
         fprintf(stderr, "Erro: a extensão do arquivo não pode ter mais de 6 caracteres.\n");
         return 0;
     }
 
     return tamanho_extensao;
 }
-void obter_extensao(FILE *arquivoCompactado, int *tamanho_extensao, unsigned char *extensao) {
+void obter_extensao(FILE *arquivoCompactado, int *tamanho_extensao, unsigned char *extensao)
+{
     // Verifica se o arquivo foi aberto corretamente
-    if (arquivoCompactado == NULL) {
+    if (arquivoCompactado == NULL)
+    {
         fprintf(stderr, "Erro ao abrir o arquivo\n");
         return;
     }
 
     // Verifica se o tamanho da extensão é válido
-    if (*tamanho_extensao > 6 || *tamanho_extensao <= 0) {
+    if (*tamanho_extensao > 6 || *tamanho_extensao <= 0)
+    {
         fprintf(stderr, "Erro: Tamanho da extensão inválido: %d\n", *tamanho_extensao);
         return;
     }
 
     unsigned char byte_lido = 0;
-    
+
     // Lê os bytes da extensão do arquivo
-    for (int i = 0; i < *tamanho_extensao; i++) {
+    for (int i = 0; i < *tamanho_extensao; i++)
+    {
         size_t bytes_lidos = fread(&byte_lido, sizeof(unsigned char), 1, arquivoCompactado);
-        if (bytes_lidos != 1) {
+        if (bytes_lidos != 1)
+        {
             fprintf(stderr, "Erro ao ler o byte %d da extensão\n", i);
             return;
         }
         extensao[i] = byte_lido;
     }
 
-    extensao[*tamanho_extensao] = '\0';  // Garante que a string tenha o terminador nulo
-    
+    extensao[*tamanho_extensao] = '\0'; // Garante que a string tenha o terminador nulo
 }
 
 // 4º Função chamada
-NoHuffman *reconstruir_arvore_huffman(FILE *arquivoCompactado, short int *tamanho_arvore){
+NoHuffman *reconstruir_arvore_huffman(FILE *arquivoCompactado, short int *tamanho_arvore)
+{
     // Declaração de uma variável para armazenar cada byte lido e um ponteiro para o novo nó
     unsigned char byte_lido;
     NoHuffman *no = NULL;
 
     // Continua reconstruindo a árvore enquanto ainda houver partes para ler
-    while (*tamanho_arvore > 0)
+    while (*tamanho_arvore)
     {
         // Lê um byte do arquivo compactado
         fread(&byte_lido, sizeof(unsigned char), 1, arquivoCompactado);
@@ -215,16 +223,16 @@ NoHuffman *reconstruir_arvore_huffman(FILE *arquivoCompactado, short int *tamanh
      * 0x61 (a), 0x2A (*), 0x28 (abertura de parênteses), 0x62 (b), 0x2A (*), 0x63 (c), 0x29 (fechamento de parênteses)
      * O caractere '*' é usado para representar um nó interno e '\\' é usado como caractere de escape.
      * A árvore é reconstruída recursivamente, lendo cada byte e criando nós folha ou internos conforme necessário.
-     * 
-    */
+     *
+     */
 }
 // 5º Função chamada
 void descomprimir_arquivo_usando_huffman(FILE *arquivo_comprimido, int tamanho_lixo, int tamanho_arq_comprimido_sem_arvore_sem_lixo, NoHuffman *arvore_huffman, FILE *arquivo_descomprimido)
 {
-    unsigned char byte_lido;  // Armazena o byte atual lido do arquivo comprimido
-    NoHuffman *atual = arvore_huffman;  // Ponteiro que percorre a árvore, começando pela raiz
-    int bits_para_processamento = tamanho_arq_comprimido_sem_arvore_sem_lixo * 8 - tamanho_lixo;  // Total de bits úteis para processamento, excluindo os bits de lixo
-    int bits_lidos = 0;  // Controla a posição atual no byte
+    unsigned char byte_lido;                                                                     // Armazena o byte atual lido do arquivo comprimido
+    NoHuffman *atual = arvore_huffman;                                                           // Ponteiro que percorre a árvore, começando pela raiz
+    int bits_para_processamento = tamanho_arq_comprimido_sem_arvore_sem_lixo * 8 - tamanho_lixo; // Total de bits úteis para processamento, excluindo os bits de lixo
+    int bits_lidos = 0;                                                                          // Controla a posição atual no byte
 
     // Loop para percorrer cada bit dos dados comprimidos até o limite de bits úteis
     for (int bitIndexGeral = 0; bitIndexGeral < bits_para_processamento; bitIndexGeral++)
@@ -238,15 +246,15 @@ void descomprimir_arquivo_usando_huffman(FILE *arquivo_comprimido, int tamanho_l
 
         // Verifica o bit específico de acordo com a função `bit_ta_ativo`
         if (bit_ta_ativo(byte_lido, bits_lidos))
-            atual = atual->direita;  // Bit 1: percorre o nó direito da árvore
+            atual = atual->direita; // Bit 1: percorre o nó direito da árvore
         else
-            atual = atual->esquerda;  // Bit 0: percorre o nó esquerdo da árvore
+            atual = atual->esquerda; // Bit 0: percorre o nó esquerdo da árvore
 
         // Quando atinge um nó folha, escreve o caractere no arquivo descomprimido
         if (e_folha(atual))
         {
             fwrite(&atual->caractere, sizeof(unsigned char), 1, arquivo_descomprimido);
-            atual = arvore_huffman;  // Volta para a raiz para o próximo caractere
+            atual = arvore_huffman; // Volta para a raiz para o próximo caractere
         }
     }
     /**
@@ -254,5 +262,5 @@ void descomprimir_arquivo_usando_huffman(FILE *arquivo_comprimido, int tamanho_l
      * Se o arquivo comprimido contém 10 bytes de dados, o tamanho do lixo é 3 e o tamanho da árvore é 2 bytes.
      * O total de bits úteis para processamento é (10 * 8) - 3 = 77 bits.
      * O loop processará cada um dos 77 bits, lendo um novo byte do arquivo a cada 8 bits.
-    */
+     */
 }
