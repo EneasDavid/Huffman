@@ -233,7 +233,6 @@ void descomprimir_arquivo_usando_huffman(FILE *arquivo_comprimido, int tamanho_l
     NoHuffman *atual = arvore_huffman;                                                           // Ponteiro que percorre a árvore, começando pela raiz
     int bits_para_processamento = tamanho_arq_comprimido_sem_arvore_sem_lixo * 8 - tamanho_lixo; // Total de bits úteis para processamento, excluindo os bits de lixo
     int bits_lidos = 0;                                                                          // Controla a posição atual no byte
-    printf("bits_para_processamento: %d\n", bits_para_processamento);
     // Loop para percorrer cada bit dos dados comprimidos até o limite de bits úteis
     for (int bitIndexGeral = 0; bitIndexGeral < bits_para_processamento; bitIndexGeral++)
     {

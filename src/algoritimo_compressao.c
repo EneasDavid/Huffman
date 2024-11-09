@@ -289,10 +289,13 @@ void escrever_extensao(FILE *arquivo_comprimido, char *caminho_arquivo, int tama
     }
 
     // Escreve os caracteres da extensão (máximo 6)
-    for(int i = 0; i < tamanho_extensao; i++) {
-        if (fwrite(&extensao[i], sizeof(unsigned char), 1, arquivo_comprimido) != 1) {
-            fprintf(stderr, "Erro ao escrever os caracteres da extensão no arquivo comprimido.\n");
-            abort();
+    int tamanho_extensao_convertido = tamanho_extensao >> 5; // Desloca o tamanho da extensão para a esquerda para limpar os bits de tamanho
+    if(tamanho_extensao_convertido<7){
+        for(int i = 0; i < tamanho_extensao_convertido; i++) {
+            if (fwrite(&extensao[i], sizeof(unsigned char), 1, arquivo_comprimido) != 1) {
+                fprintf(stderr, "Erro ao escrever os caracteres da extensão no arquivo comprimido.\n");
+                abort();
+            }
         }
     }
 }
