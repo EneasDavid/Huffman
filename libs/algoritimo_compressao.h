@@ -25,6 +25,11 @@ void escrever_cabecalho_inicial(FILE *arquivo_comprimido, int tamanho_lixo, int 
 void escrever_arvore_pre_ordem(FILE *arquivo_comprimido, NoHuffman *preorder);
 
 void gerar_Nova_Tabela_ASCII_Hufmman(NoHuffman *raiz, dado_objeto table[], dado_objeto codigo_parafolha);
+// =========
+int calcular_tamanho_extensao(char *caminho_arquivo);
+
+void escrever_extensao(FILE *arquivo_comprimido, char *extensao, int tamanho_extensao);
+// =========
 
 void gravarCodigos(FILE *arquivoComprimido, FILE *arquivoPraComprimir, dado_objeto tabela[], int tamanho_lixo);
 

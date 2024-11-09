@@ -9,8 +9,7 @@
 void comprimir(char *caminho_arquivo)
 {
     FILE *arquivo_para_comprimir = fopen(caminho_arquivo, "rb");
-    strcat(caminho_arquivo, ".huff");
-    FILE *arquivo_comprimido = fopen(caminho_arquivo, "wb");
+    FILE *arquivo_comprimido = fopen("compress.huff", "wb");
 
     NoHuffman *fila_prioridade = NULL;
 
@@ -46,6 +45,9 @@ void comprimir(char *caminho_arquivo)
     escrever_cabecalho_inicial(arquivo_comprimido, tamanho_lixo, tamanho_arvore);
 
     escrever_arvore_pre_ordem(arquivo_comprimido, fila_prioridade);
+    
+    int tamanho_extensao = calcular_tamanho_extensao(caminho_arquivo);
+    escrever_extensao(arquivo_comprimido, caminho_arquivo, tamanho_extensao);
 
     fseek(arquivo_para_comprimir, 0, SEEK_SET);
 
@@ -55,42 +57,63 @@ void comprimir(char *caminho_arquivo)
     fclose(arquivo_comprimido);
 }
 
+// Função para descomprimir o arquivo
 void descomprimir(char *caminho_arquivo_comprimido)
 {
-    // Declara um array de caracteres para o nome do arquivo descomprimido
-    char caminho_arquivo_descomprimido[TAMANHO_ASCII];
-    
-    // Copia o caminho do arquivo comprimido para caminho_arquivo_descomprimido
-    strncpy(caminho_arquivo_descomprimido, caminho_arquivo_comprimido, sizeof(caminho_arquivo_descomprimido) - 1);
-    caminho_arquivo_descomprimido[sizeof(caminho_arquivo_descomprimido) - 1] = '\0'; // Garante terminação correta
-
-    // Remove ".huff" do final, se presente
-    char *extensao = strstr(caminho_arquivo_descomprimido, ".huff");
-    if (extensao && extensao == caminho_arquivo_descomprimido + strlen(caminho_arquivo_descomprimido) - strlen(".huff")) {
-        *extensao = '\0';  // Corta a string antes de ".huff"
-    }
-
     // Abre o arquivo comprimido para leitura binária
     FILE *arquivo_comprimido = fopen(caminho_arquivo_comprimido, "rb");
     if (!arquivo_comprimido) {
-        printf("Problema ao abrir o arquivo comprimido\n");
+        perror("Erro ao abrir o arquivo comprimido");
         return;
+    }
+
+    // Obtém as informações do cabeçalho do arquivo comprimido
+    short int lixo = obter_lixo(arquivo_comprimido);
+    short int tamanho_arvore = obter_tamanho_arvore(arquivo_comprimido);
+
+    // Calcula o tamanho do arquivo comprimido excluindo a árvore e o lixo
+    unsigned long long int tamanho_arq_comprimido_sem_arvore_sem_lixo = obterTamanhoCompressao(arquivo_comprimido) - (2 + tamanho_arvore);
+
+    // Reconstrói a árvore de Huffman a partir do arquivo comprimido
+    NoHuffman *arvore_huffman = reconstruir_arvore_huffman(arquivo_comprimido, &tamanho_arvore);
+    if (arvore_huffman == NULL) {
+        fprintf(stderr, "Erro ao reconstruir a árvore de Huffman\n");
+        fclose(arquivo_comprimido);
+        return;
+    }
+
+    // Obtém a extensão original do arquivo comprimido
+    int tamanho_extensao = obter_tamanho_extensao(arquivo_comprimido);
+    unsigned char extensao[7] = {0}; // Suporte para até 6 caracteres de extensão
+    
+    // Lê a extensão do arquivo
+    obter_extensao(arquivo_comprimido, &tamanho_extensao, extensao);
+
+    // Define o nome do arquivo descomprimido com base na extensão
+    char caminho_arquivo_descomprimido[100] = "out";
+    if (tamanho_extensao > 0) {
+        strcat(caminho_arquivo_descomprimido, ".");
+        strncat(caminho_arquivo_descomprimido, (char*)extensao, tamanho_extensao);
     }
 
     // Abre o arquivo descomprimido para escrita binária
     FILE *arquivo_descomprimido = fopen(caminho_arquivo_descomprimido, "wb");
     if (!arquivo_descomprimido) {
-        printf("Problema ao abrir o arquivo descomprimido\n");
+        perror("Erro ao criar o arquivo descomprimido");
         fclose(arquivo_comprimido);
         return;
     }
-    short int lixo = obter_lixo(arquivo_comprimido);
-    short int tamanho_arvore = obter_tamanho_arvore(arquivo_comprimido);
-    unsigned long long int tamanho_arq_comprimido_sem_arvore_sem_lixo = obterTamanhoCompressao(arquivo_comprimido) - (2 + tamanho_arvore);
 
-    NoHuffman *arvore_huffman = reconstruir_arvore_huffman(arquivo_comprimido, &tamanho_arvore);
-    descomprimir_arquivo_usando_huffman(arquivo_comprimido, lixo, tamanho_arq_comprimido_sem_arvore_sem_lixo, arvore_huffman, arquivo_descomprimido);
+    // Descomprime o arquivo usando a árvore de Huffman reconstruída
+    descomprimir_arquivo_usando_huffman(
+        arquivo_comprimido,
+        lixo,
+        tamanho_arq_comprimido_sem_arvore_sem_lixo,
+        arvore_huffman,
+        arquivo_descomprimido
+    );
 
+    // Fecha os arquivos
     fclose(arquivo_comprimido);
     fclose(arquivo_descomprimido);
 }

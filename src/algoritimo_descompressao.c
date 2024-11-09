@@ -108,6 +108,56 @@ unsigned long long int obterTamanhoCompressao(FILE *arquivo)
      * Se o arquivo tem 100 bytes, a função retornará 100.
      * */
 }
+// Função para calcular o tamanho da extensão de um arquivo a partir do caminho do arquivo
+
+int obter_tamanho_extensao(FILE *arquivoCompactado) {
+    // Verifica se o arquivo foi aberto corretamente
+    if (arquivoCompactado == NULL) return -1; // Retorna -1 para indicar erro ao abrir o arquivo
+
+    unsigned char byte_lido;
+
+    // Lê o primeiro byte do arquivo compactado
+    fread(&byte_lido, sizeof(unsigned char), 1, arquivoCompactado);
+
+    // Os 3 primeiros bits representam o tamanho da extensão (no máximo 6)
+    int tamanho_extensao = byte_lido >> 5;  // Desloca os bits para a direita para alinhar o valor
+
+    // Verifica se o valor extraído é válido
+    if (tamanho_extensao > 6) {
+        fprintf(stderr, "Erro: a extensão do arquivo não pode ter mais de 6 caracteres.\n");
+        return 0;
+    }
+
+    return tamanho_extensao;
+}
+void obter_extensao(FILE *arquivoCompactado, int *tamanho_extensao, unsigned char *extensao) {
+    // Verifica se o arquivo foi aberto corretamente
+    if (arquivoCompactado == NULL) {
+        fprintf(stderr, "Erro ao abrir o arquivo\n");
+        return;
+    }
+
+    // Verifica se o tamanho da extensão é válido
+    if (*tamanho_extensao > 6 || *tamanho_extensao <= 0) {
+        fprintf(stderr, "Erro: Tamanho da extensão inválido: %d\n", *tamanho_extensao);
+        return;
+    }
+
+    unsigned char byte_lido = 0;
+    
+    // Lê os bytes da extensão do arquivo
+    for (int i = 0; i < *tamanho_extensao; i++) {
+        size_t bytes_lidos = fread(&byte_lido, sizeof(unsigned char), 1, arquivoCompactado);
+        if (bytes_lidos != 1) {
+            fprintf(stderr, "Erro ao ler o byte %d da extensão\n", i);
+            return;
+        }
+        extensao[i] = byte_lido;
+    }
+
+    extensao[*tamanho_extensao] = '\0';  // Garante que a string tenha o terminador nulo
+    
+}
 
 // 4º Função chamada
 NoHuffman *reconstruir_arvore_huffman(FILE *arquivoCompactado, short int *tamanho_arvore){

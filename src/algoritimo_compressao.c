@@ -247,6 +247,54 @@ void escrever_cabecalho_inicial(FILE *arquivo_comprimido, int tamanho_lixo, int 
     // Escreve o segundo byte no arquivo comprimido
     fwrite(&segundo_bit, sizeof(unsigned char), 1, arquivo_comprimido);
 }
+
+
+int calcular_tamanho_extensao(char *caminho_arquivo) {
+    // Localiza o último ponto no caminho do arquivo, que marca o início da extensão
+    char *extensao = strrchr(caminho_arquivo, '.');
+    long tamanho = 0;
+    if (extensao == NULL) {
+        fprintf(stderr, "Erro: o arquivo não possui uma extensão.\n");
+        return 0;
+    }
+
+    // Calcula o tamanho da extensão (sem o ponto)
+    int tamanho_extensao = strlen(extensao) - 1;    
+
+    // Verifica se a extensão excede o limite de 6 caracteres
+    if (tamanho_extensao > 6) {
+        fprintf(stderr, "Erro: a extensão do arquivo não pode ter mais de 6 caracteres.\n");
+        return 0;
+    }
+    tamanho = tamanho | (tamanho_extensao << 5);
+
+    return tamanho;
+}
+
+
+void escrever_extensao(FILE *arquivo_comprimido, char *caminho_arquivo, int tamanho_extensao) {
+    // Valida o tamanho da extensão, garantindo que não seja zero ou maior que 6
+    if (tamanho_extensao == 0) {
+        fprintf(stderr, "Erro: Tamanho da extensão inválido (deve ser entre 1 e 6).\n");
+        abort(); // Encerra o programa em caso de erro
+    }
+
+    // Obtém a extensão sem o ponto, '+1' move o ponteiro para o início da extensão
+    char *extensao = strrchr(caminho_arquivo, '.') + 1;
+    
+    // Escreve o byte que contém o tamanho da extensão no arquivo
+    if (fwrite(&tamanho_extensao, sizeof(unsigned char), 1, arquivo_comprimido) != 1) {
+        fprintf(stderr, "Erro ao escrever o byte de extensão no arquivo comprimido.\n");
+        abort();
+    }
+
+    // Escreve os caracteres da extensão (máximo 6)
+    if (fwrite(extensao, sizeof(unsigned char), tamanho_extensao, arquivo_comprimido) != tamanho_extensao) {
+        fprintf(stderr, "Erro ao escrever os caracteres da extensão no arquivo comprimido.\n");
+        abort();
+    }
+}
+
 // 7º quarta função chamada
 void escrever_arvore_pre_ordem(FILE *arquivo_comprimido, NoHuffman *preorder)
 {

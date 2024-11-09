@@ -9,7 +9,8 @@
 unsigned int bit_ta_ativo(unsigned char caracter, int i);
 
 short int obter_lixo(FILE *arquivoCompactado);
-
+int obter_tamanho_extensao(FILE *arquivo_comprimido);
+void obter_extensao(FILE *arquivoCompactado, int *tamanho_extensao, unsigned char *extensao);
 short int obter_tamanho_arvore(FILE *arquivoCompactado);
 
 unsigned long long int obterTamanhoCompressao(FILE *arquivo);

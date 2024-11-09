@@ -80,3 +80,10 @@ void liberar_arvore_huffman(NoHuffman *raiz)
         free(raiz);                             // Libera o nó atual
     }
 }
+
+
+void imprimir_binario(unsigned char byte) {
+    for (int i = 7; i >= 0; i--) {
+        printf("%d", (byte >> i) & 1);  // Imprime cada bit do byte
+    }
+}

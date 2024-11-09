@@ -24,6 +24,7 @@ typedef struct no_huffman
   struct no_huffman *esquerda; // Ponteiro para o filho esquerdo na árvore
   struct no_huffman *direita;  // Ponteiro para o filho direito na árvore
 } NoHuffman;
+void imprimir_binario(unsigned char byte);
 
 /**
  * permitindo que cada caractere tenha
